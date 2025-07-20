@@ -88,4 +88,43 @@
         justify-content: center;
         gap: 2rem;
     }
+
+    .overview-tips {
+        display: flex;
+        gap: 1rem;
+
+        .current {
+            display: flex;
+
+            div {
+                margin-right: 8px;
+                background-color: purple;
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .answered {
+            display: flex;
+
+            div {
+                margin-right: 8px;
+                background-color: green;
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .unanswered {
+            display: flex;
+            gap: 0;
+
+            div {
+                margin-right: 8px;
+                background-color: gray;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
 }

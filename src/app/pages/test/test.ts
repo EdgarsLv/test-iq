@@ -1,4 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
+import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 
 type Questions = {
   id: number;
@@ -18,11 +19,103 @@ type Questions = {
 export class Test {
   public questions = signal<Questions[]>(questions);
   public currentQuestion = signal<number>(0);
-
   public question = computed<Questions>(
     () => this.questions()[this.currentQuestion()]
   );
   public questionOptions = computed(() => this.question().options);
+  public answers = signal<Record<number, number>>({ 0: 0 });
+  public timeLeft = signal<number>(1800);
+  public startTime = signal<number>(Date.now());
+  public formattedTime = signal<string>('30:00');
+  public showResult = signal<boolean>(false);
+  public submitDisabled = computed(
+    () => Object.keys(this.answers()).length - 1 < this.questions().length
+  );
+
+  private destroy$ = new Subject<void>();
+
+  ngOnInit(): void {
+    this.startCountdown();
+  }
+
+  private startCountdown(): void {
+    interval(1000)
+      .pipe(
+        takeUntil(this.destroy$),
+        takeWhile(() => this.timeLeft() > 0 && !this.showResult()),
+        tap(() => {
+          this.timeLeft.update((val) => val - 1);
+          this.formattedTime.set(this.formatTime(this.timeLeft()));
+
+          if (this.timeLeft() === 0) {
+            this.handleSubmit();
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  formatTime(totalSeconds: number): string {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  pad(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
+
+  public handleAnswer(questionId: number, answerIndex: number): void {
+    this.answers.update((prev) => ({
+      ...prev,
+      [questionId]: answerIndex,
+    }));
+  }
+
+  public calculateScore(): any {
+    let correct = 0;
+    let totalPoints = 0;
+
+    this.questions().forEach((question) => {
+      const userAnswer = this.answers()[question.id];
+      if (userAnswer === question.correct) {
+        correct++;
+        // Weight questions by difficulty
+        const points =
+          question.difficulty === 'easy'
+            ? 1
+            : question.difficulty === 'medium'
+            ? 2
+            : 3;
+        totalPoints += points;
+      }
+    });
+
+    // Calculate IQ score (scaled to typical IQ range)
+    const maxPoints = this.questions().reduce(
+      (sum, q) =>
+        sum + (q.difficulty === 'easy' ? 1 : q.difficulty === 'medium' ? 2 : 3),
+      0
+    );
+
+    const percentage = totalPoints / maxPoints;
+    const iqScore = Math.round(70 + percentage * 60); // Scale to 70-130 range
+
+    return {
+      correct,
+      total: this.questions().length,
+      iqScore,
+      totalPoints,
+      maxPoints,
+    };
+  }
+
+  public handleSubmit(): void {
+    const timeSpent = Math.round((Date.now() - this.startTime()) / 1000);
+    const { iqScore } = this.calculateScore();
+    this.showResult.set(true);
+    // onComplete(iqScore, timeSpent);
+  }
 
   public nextQuestion = () => {
     if (this.currentQuestion() < this.questions().length - 1) {
@@ -35,6 +128,11 @@ export class Test {
       this.currentQuestion.set(this.currentQuestion() - 1);
     }
   };
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
 
 const questions = [

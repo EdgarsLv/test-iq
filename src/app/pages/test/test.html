@@ -3,7 +3,8 @@
     <div>
       <h2>IQ Test</h2>
       <div>
-        Question {{ currentQuestion() + 1 }} of {{ questions().length }}
+        {{ formattedTime() }} Question {{ currentQuestion() + 1 }} of
+        {{ questions().length }}
       </div>
     </div>
     <div class="progress"></div>
@@ -11,7 +12,16 @@
 
   <div class="test-section">
     <div class="type">
-      <span>{{ question().difficulty }}</span>
+      <span
+        [style.backgroundColor]="
+          question().difficulty === 'easy'
+            ? 'green'
+            : question().difficulty === 'medium'
+            ? 'orange'
+            : 'red'
+        "
+        >{{ question().difficulty }}</span
+      >
       <span>{{ question().type }}</span>
     </div>
     <div>
@@ -20,16 +30,32 @@
 
     <div class="questions">
       @for (option of questionOptions(); track $index) {
-      <div>{{ option }}</div>
+      <div
+        (click)="handleAnswer(question().id, $index)"
+        [style.backgroundColor]="
+          answers()[question().id] === $index ? 'black' : ''
+        "
+      >
+        {{ option }}
+      </div>
       }
     </div>
 
     <div class="nav-buttons">
-      <button (click)="prevQuestion()">previous</button>
+      <button (click)="prevQuestion()" [disabled]="currentQuestion() === 0">
+        previous
+      </button>
       @if (currentQuestion() < questions().length - 1) {
-      <button (click)="nextQuestion()">next</button>
+      <button
+        (click)="nextQuestion()"
+        [disabled]="answers()[question().id] === undefined"
+      >
+        next
+      </button>
       }@else {
-      <button>Submit</button>
+      <button (click)="handleSubmit()" [disabled]="submitDisabled()">
+        Submit
+      </button>
       }
     </div>
   </div>
@@ -39,10 +65,34 @@
 
     <div class="overview-buttons">
       @for (item of questions(); track $index) {
-      <button (click)="currentQuestion.set($index)">{{ $index + 1 }}</button>
+      <button
+        (click)="currentQuestion.set($index)"
+        [style.backgroundColor]="
+          currentQuestion() === $index
+            ? 'purple'
+            : answers()[questions()[$index].id] !== undefined
+            ? 'green'
+            : 'gray'
+        "
+      >
+        {{ $index + 1 }}
+      </button>
       }
     </div>
 
-    <div><span>current</span><span>answered</span><span>unanswered</span></div>
+    <div class="overview-tips">
+      <div class="current">
+        <div></div>
+        <span>Current</span>
+      </div>
+      <div class="answered">
+        <div></div>
+        <span>Answered</span>
+      </div>
+      <div class="unanswered">
+        <div></div>
+        <span>Unanswered</span>
+      </div>
+    </div>
   </div>
 </div>
