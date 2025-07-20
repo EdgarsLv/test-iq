@@ -1,1 +1,48 @@
-<p>test works!</p>
+<div class="section">
+  <div class="progress-section">
+    <div>
+      <h2>IQ Test</h2>
+      <div>
+        Question {{ currentQuestion() + 1 }} of {{ questions().length }}
+      </div>
+    </div>
+    <div class="progress"></div>
+  </div>
+
+  <div class="test-section">
+    <div class="type">
+      <span>{{ question().difficulty }}</span>
+      <span>{{ question().type }}</span>
+    </div>
+    <div>
+      <h2>{{ question().question }}</h2>
+    </div>
+
+    <div class="questions">
+      @for (option of questionOptions(); track $index) {
+      <div>{{ option }}</div>
+      }
+    </div>
+
+    <div class="nav-buttons">
+      <button (click)="prevQuestion()">previous</button>
+      @if (currentQuestion() < questions().length - 1) {
+      <button (click)="nextQuestion()">next</button>
+      }@else {
+      <button>Submit</button>
+      }
+    </div>
+  </div>
+
+  <div class="overview-section">
+    <div><h3>Question overview</h3></div>
+
+    <div class="overview-buttons">
+      @for (item of questions(); track $index) {
+      <button (click)="currentQuestion.set($index)">{{ $index + 1 }}</button>
+      }
+    </div>
+
+    <div><span>current</span><span>answered</span><span>unanswered</span></div>
+  </div>
+</div>
