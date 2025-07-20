@@ -1,0 +1,70 @@
+.section {
+    display: grid;
+    grid-template-rows: 1fr 1fr 60px 1fr;
+}
+
+.top-section {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgb(9, 104, 187);
+    margin-top: 1rem;
+
+    h1 {
+        margin-bottom: 1rem;
+    }
+}
+
+.middle-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+
+    div h2 {
+        margin-bottom: 1rem;
+    }
+
+    div:first-child {
+        background-color: rgb(6, 110, 110);
+        padding: 1rem;
+    }
+
+    div:nth-child(2) {
+        background-color: rgb(11, 67, 67);
+        padding: 1rem;
+    }
+
+    div:last-child {
+        background-color: rgb(3, 62, 62);
+        padding: 1rem;
+    }
+}
+
+.bottom-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    
+
+    div {
+        display: flex;
+        gap: 1rem;
+
+        button {
+            padding: 8px 16px;
+            background-color: black;
+            cursor: pointer;
+        }
+    }
+
+
+}
+
+.score-section {
+    background-color: rgb(44, 54, 54);
+    margin-top: 1rem;
+    padding: 2rem;
+    text-align: center;
+}
