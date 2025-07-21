@@ -10,6 +10,13 @@ type Questions = {
   difficulty: string;
 };
 
+export type TestResult = {
+  id: number;
+  iqScore: number;
+  timeSpent: number;
+  date: string;
+};
+
 @Component({
   selector: 'app-test',
   imports: [],
@@ -114,7 +121,24 @@ export class Test {
     const timeSpent = Math.round((Date.now() - this.startTime()) / 1000);
     const { iqScore } = this.calculateScore();
     this.showResult.set(true);
-    // onComplete(iqScore, timeSpent);
+
+    const result = {
+      id: Date.now(),
+      iqScore,
+      timeSpent,
+      date: new Date().toISOString(),
+    };
+
+    this.saveTestResult(result);
+  }
+
+  private saveTestResult(result: TestResult): void {
+    const testResults = JSON.parse(
+      localStorage.getItem('iqTestResults') || '[]'
+    );
+    const newResults = [...testResults, result];
+
+    localStorage.setItem('iqTestResults', JSON.stringify(newResults));
   }
 
   public nextQuestion = () => {

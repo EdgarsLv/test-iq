@@ -1,1 +1,122 @@
-<p>results works!</p>
+<div class="section">
+  <div class="actions">
+    <div>
+      <h2>Your IQ Test Results</h2>
+      <p>Edgars, Age 43</p>
+    </div>
+    <div>
+      <button>Timaline</button>
+      <button>Analysis</button>
+    </div>
+  </div>
+
+  <div class="badges">
+    <div>
+      <span>{{ stats().currentScore }}</span>
+      <span>Current score</span>
+    </div>
+    <div>
+      <span>{{ stats().highest }}</span>
+      <span>Highest Score</span>
+    </div>
+    <div>
+      <span>{{ stats().average }}</span>
+      <span>Average Score</span>
+    </div>
+    <div>
+      <span [style.color]="stats().improvement >= 0 ? 'green' : 'red'">
+        @if (stats().improvement > 0) {
+        <span>+</span>
+        }
+        {{ stats().improvement }}</span
+      >
+      <span>Improvement</span>
+    </div>
+    <div>
+      <span>{{ stats().totalTests }}</span>
+      <span>Tests taken</span>
+    </div>
+    <div>
+      <span>{{ stats().averageTime }}</span>
+      <span>Average time</span>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div><h2>Score Timeline</h2></div>
+
+    <div>
+      <div class="timeline-header">
+        <div>Test #</div>
+        <div>Date</div>
+        <div>Score</div>
+        <div>Time</div>
+        <div>Performance</div>
+      </div>
+
+      @for (result of testResults(); track $index) {
+      <div class="timeline-data">
+        <div>#{{ $index + 1 }}</div>
+        <div>{{ result.date | date : "dd.MM.yyyy" }}</div>
+        <div [style.color]="getScoreColor(result.iqScore)">
+          {{ result.iqScore }}
+        </div>
+        <div>{{ timeInMinutes(result) }}m</div>
+        <div>
+          <div class="progressbar">
+            <div
+              [style.backgroundColor]="getScoreColor(result.iqScore)"
+              [style.width]="progressWidth(result)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="analysis">
+    <div class="interpretation">
+      <h2>Score interpretation</h2>
+      <div class="score">
+        <span>130+ (Exceptional)</span>
+        <span [style.color]="'purple'">2%</span>
+      </div>
+      <div class="score">
+        <span>115-129 (Above Average)</span>
+        <span [style.color]="'blue'">16%</span>
+      </div>
+      <div class="score">
+        <span>100-114 (Average)</span>
+        <span [style.color]="'green'">50%</span>
+      </div>
+      <div class="score">
+        <span>85-99 (Below Average)</span>
+        <span [style.color]="'yellow'">16%</span>
+      </div>
+      <div class="score">
+        <span>Below 85 (Low)</span>
+        <span [style.color]="'red'">16%</span>
+      </div>
+    </div>
+
+    <div class="statistics">
+      <h2>Your Statistics</h2>
+
+      <div class="stats">
+        <span>Current Level:</span>
+        <span [style.color]="getScoreColor(stats()!.average)">
+          {{ curretLevel() }}
+        </span>
+      </div>
+      <div class="stats">
+        <span>Score Range:</span>
+        <span>{{ stats().lowest }} - {{ stats().highest }}</span>
+      </div>
+      <div class="stats">
+        <span>Consistency:</span>
+        <span> {{ consistency() }} </span>
+      </div>
+    </div>
+  </div>
+</div>
