@@ -1,7 +1,11 @@
-<app-header />
+<div class="layout-wrapper layout-overlay">
+  <app-header />
 
-<main>
-  <router-outlet />
-</main>
-
-<app-footer />
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <router-outlet />
+    </div>
+    <app-footer />
+  </div>
+  <div class="layout-mask animate-fadein"></div>
+</div>
