@@ -1,6 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { TestResult } from '../test/test';
 import { CommonModule } from '@angular/common';
+import { StatsWidget } from '../../components/stats-widget/stats-widget';
+import { AvatarModule } from 'primeng/avatar';
 
 type TestStats = {
   average: number;
@@ -14,7 +16,7 @@ type TestStats = {
 
 @Component({
   selector: 'app-results',
-  imports: [CommonModule],
+  imports: [CommonModule, StatsWidget, AvatarModule],
   templateUrl: './results.html',
   styleUrl: './results.scss',
 })

@@ -1,47 +1,45 @@
 <div class="section">
-  <div class="actions">
+  <div class="card mb-0 flex justify-between items-center">
     <div>
-      <h2>Your IQ Test Results</h2>
-      <p>Edgars, Age 43</p>
+      <h4>Your IQ Test results</h4>
+      <p class="text-muted-color">Edgars (43)</p>
     </div>
     <div>
-      <img
-        width="80px"
-        src="https://img.freepik.com/premium-vector/man-avatar-profile-picture-isolated-background-avatar-profile-picture-man_1293239-4841.jpg?semt=ais_hybrid&w=740"
-      />
+      <p-avatar label="EP" size="xlarge" />
     </div>
   </div>
 
-  <div class="badges">
-    <div>
-      <span>{{ stats().currentScore }}</span>
-      <span>Current score</span>
-    </div>
-    <div>
-      <span>{{ stats().highest }}</span>
-      <span>Highest Score</span>
-    </div>
-    <div>
-      <span>{{ stats().average }}</span>
-      <span>Average Score</span>
-    </div>
-    <div>
-      <span [style.color]="stats().improvement >= 0 ? 'green' : 'red'">
-        @if (stats().improvement > 0) {
-        <span>+</span>
-        }
-        {{ stats().improvement }}</span
-      >
-      <span>Improvement</span>
-    </div>
-    <div>
-      <span>{{ stats().totalTests }}</span>
-      <span>Tests taken</span>
-    </div>
-    <div>
-      <span>{{ stats().averageTime }}</span>
-      <span>Average time</span>
-    </div>
+  <div class="grid lg:grid-cols-6 gap-4 sm:grid-cols-3">
+    <app-stats-widget
+      text="Current score"
+      [score]="stats().currentScore"
+      icon="pi pi-lightbulb"
+    />
+    <app-stats-widget
+      text="Highest score"
+      [score]="stats().highest"
+      icon="pi pi-trophy"
+    />
+    <app-stats-widget
+      text="Average score"
+      [score]="stats().average"
+      icon="pi pi-chart-bar"
+    />
+    <app-stats-widget
+      text="Improvement"
+      [score]="stats().improvement"
+      icon="pi pi-chart-line"
+    />
+    <app-stats-widget
+      text="Tests taken"
+      [score]="stats().totalTests"
+      icon="pi pi-calendar-times"
+    />
+    <app-stats-widget
+      text="Average time"
+      [score]="stats().averageTime"
+      icon="pi pi-stopwatch"
+    />
   </div>
 
   <div class="timeline">

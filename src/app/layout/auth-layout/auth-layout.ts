@@ -1,7 +1,7 @@
 import { Component, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Header } from '../../components/header/header';
-import { Footer } from '../../components/footer/footer';
+import { Header } from '../components/header/header';
+import { Footer } from '../components/footer/footer';
 import { LayoutService } from '../service/layout.service';
 import { filter, Subscription } from 'rxjs';
 

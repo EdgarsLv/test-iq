@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
-import { LayoutService } from '../../layout/service/layout.service';
+import { LayoutService } from '../../service/layout.service';
 
 @Component({
   selector: 'app-header',
