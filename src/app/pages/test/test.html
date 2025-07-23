@@ -11,7 +11,7 @@
     </div>
     <div>
       <p-progressbar
-        [value]="30"
+        [value]="progressValue()"
         [color]="'#06981a'"
         [showValue]="false"
         [style]="{ height: '0.6rem' }"
@@ -32,18 +32,18 @@
       <h4>{{ question().question }}</h4>
     </div>
 
-    <div class="">
+    <div>
       @for (option of questionOptions(); track $index) { @let selected =
       answers()[question().id] === $index;
       <div
-        class="mb-2 p-3 border border-[var(--p-surface-800)] rounded-sm cursor-pointer"
+        class="mb-2 p-3 flex items-center border border-[var(--p-surface-800)] rounded-sm cursor-pointer hover:border-[var(--p-surface-700)]"
         (click)="handleAnswer(question().id, $index)"
         [class]="selected ? 'bg-[var(--p-surface-800)]' : ''"
       >
         @if (selected) {
-        <i class="pi pi-check-circle text-green-500"></i>
+        <i class="pi pi-check-circle text-green-500 text-[1.2rem]"></i>
         }@else {
-        <i class="pi pi-circle"></i>
+        <i class="pi pi-circle text-[1.2rem]"></i>
         }
 
         <span class="ml-4 font-medium">{{ option }}</span>

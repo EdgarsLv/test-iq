@@ -3,8 +3,6 @@ import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { FormsModule } from '@angular/forms';
 
 type Questions = {
   id: number;
@@ -25,13 +23,7 @@ export type TestResult = {
 
 @Component({
   selector: 'app-test',
-  imports: [
-    ButtonModule,
-    FormsModule,
-    RadioButtonModule,
-    ProgressBarModule,
-    TagModule,
-  ],
+  imports: [ButtonModule, ProgressBarModule, TagModule],
   templateUrl: './test.html',
   styleUrl: './test.scss',
 })
@@ -50,6 +42,12 @@ export class Test {
   public submitDisabled = computed(
     () => Object.keys(this.answers()).length - 1 < this.questions().length
   );
+  public progressValue = computed(() => {
+    const answered = Object.keys(this.answers()).length - 1;
+    const total = this.questions().length;
+
+    return total > 0 ? Math.round((answered / total) * 100) : 0;
+  });
 
   private destroy$ = new Subject<void>();
 
