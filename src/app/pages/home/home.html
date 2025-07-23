@@ -1,39 +1,49 @@
 <div class="section">
-  <div class="top-section">
+  <div class="card text-center">
     <h1>IQ Test pro</h1>
-    <h3>
+    <h3 class="text-muted-color-emphasis! text-balance my-0!">
       Discover your intellectual potential with our comprehensive IQ assessment
     </h3>
   </div>
 
-  <div class="middle-section">
-    <div>
-      <h2>Timed Assessment</h2>
-      <p>Complete 20 challenging questions in a structured time format</p>
+  <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
+    <div class="card">
+      <div><i class="pi pi-stopwatch text-5xl text-purple-500"></i></div>
+      <h4>Timed Assessment</h4>
+      <p class="text-muted-color-emphasis">
+        Complete 20 challenging questions in a structured time format
+      </p>
     </div>
 
-    <div>
-      <h2>Visual Analytics</h2>
-      <p>Track your progress with interactive age vs. score graphs</p>
+    <div class="card">
+      <div><i class="pi pi-chart-bar text-5xl text-teal-500"></i></div>
+      <h4>Visual Analytics</h4>
+      <p class="text-muted-color-emphasis">
+        Track your progress with interactive score graphs
+      </p>
     </div>
 
-    <div>
-      <h2>Detailed Results</h2>
-      <p>Get comprehensive insights into your cognitive abilities</p>
+    <div class="card mb-8!">
+      <div><i class="pi pi-objects-column text-5xl text-blue-500"></i></div>
+      <h4>Detailed Results</h4>
+      <p class="text-muted-color-emphasis">
+        Get comprehensive insights into your cognitive abilities
+      </p>
     </div>
   </div>
 
-  <div class="bottom-section">
-    <div>
-      <button>SET UP PROFILE</button>
-      <button>START IQ TEST</button>
-      <button>VIEW RESULTS</button>
-    </div>
+  <div class="flex gap-4 justify-center">
+    <p-button>SET UP PROFILE</p-button>
+    <p-button severity="contrast">START IQ TEST</p-button>
+    <p-button severity="info">VIEW RESULTS</p-button>
   </div>
 
-  <div class="score-section">
-    <h2>Your last score</h2>
-    <p>103</p>
-    <p>Tests completed: 1</p>
+  <div class="card text-center mt-7">
+    <h4>Your last score</h4>
+    <p class="text-2xl font-semibold">103</p>
+    <p>
+      <span class="mr-4">Tests completed:</span>
+      <span class="font-semibold">5</span>
+    </p>
   </div>
 </div>
