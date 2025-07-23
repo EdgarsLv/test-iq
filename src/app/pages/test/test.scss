@@ -1,7 +1,16 @@
 .section {
+
     display: grid;
     grid-template-rows: auto 1fr auto;
     margin-bottom: 1rem;
+}
+
+.section {
+    margin-inline: 10%;
+
+    @media (max-width: 900px) {
+        margin-inline: 0;
+    }
 }
 
 .progress-section {
@@ -22,7 +31,7 @@
 }
 
 .test-section {
-    background-color: rgb(2, 93, 93);
+    background-color: #06981a;
     margin-top: 1rem;
     padding: 2rem;
 

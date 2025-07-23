@@ -1,5 +1,10 @@
 import { Component, computed, signal } from '@angular/core';
 import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 
 type Questions = {
   id: number;
@@ -20,7 +25,13 @@ export type TestResult = {
 
 @Component({
   selector: 'app-test',
-  imports: [],
+  imports: [
+    ButtonModule,
+    FormsModule,
+    RadioButtonModule,
+    ProgressBarModule,
+    TagModule,
+  ],
   templateUrl: './test.html',
   styleUrl: './test.scss',
 })

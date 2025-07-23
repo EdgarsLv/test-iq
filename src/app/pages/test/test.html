@@ -1,67 +1,89 @@
 <div class="section">
-  <div class="progress-section">
-    <div>
-      <h2>IQ Test</h2>
+  <div class="card">
+    <div class="flex justify-between items-center">
+      <h4>IQ Test</h4>
       <div>
-        {{ formattedTime() }} Question {{ currentQuestion() + 1 }} of
-        {{ questions().length }}
+        <p-tag [value]="formattedTime()" severity="secondary" />
+        <span class="text-muted-color-emphasis ml-2">
+          Question {{ currentQuestion() + 1 }} of {{ questions().length }}
+        </span>
       </div>
     </div>
-    <div class="progress"></div>
+    <div>
+      <p-progressbar
+        [value]="30"
+        [color]="'#06981a'"
+        [showValue]="false"
+        [style]="{ height: '0.6rem' }"
+      />
+    </div>
   </div>
 
-  <div class="test-section">
-    <div class="type">
-      <span
-        [style.backgroundColor]="
-          question().difficulty === 'easy'
-            ? 'green'
-            : question().difficulty === 'medium'
-            ? 'orange'
-            : 'red'
-        "
-        >{{ question().difficulty }}</span
-      >
-      <span>{{ question().type }}</span>
-    </div>
+  <div class="card">
     <div>
-      <h2>{{ question().question }}</h2>
+      @let severity = question().difficulty === 'easy' ? 'success' :
+      question().difficulty === 'medium' ? 'warn' : 'danger';
+
+      <p-tag [value]="question().difficulty" [severity]="severity" />
+      <span class="ml-2 text-muted-color">{{ question().type }}</span>
     </div>
 
-    <div class="questions">
-      @for (option of questionOptions(); track $index) {
+    <div class="mt-1">
+      <h4>{{ question().question }}</h4>
+    </div>
+
+    <div class="">
+      @for (option of questionOptions(); track $index) { @let selected =
+      answers()[question().id] === $index;
       <div
+        class="mb-2 p-3 border border-[var(--p-surface-800)] rounded-sm cursor-pointer"
         (click)="handleAnswer(question().id, $index)"
-        [style.backgroundColor]="
-          answers()[question().id] === $index ? 'black' : ''
-        "
+        [class]="selected ? 'bg-[var(--p-surface-800)]' : ''"
       >
-        {{ option }}
+        @if (selected) {
+        <i class="pi pi-check-circle text-green-500"></i>
+        }@else {
+        <i class="pi pi-circle"></i>
+        }
+
+        <span class="ml-4 font-medium">{{ option }}</span>
       </div>
       }
     </div>
 
-    <div class="nav-buttons">
-      <button (click)="prevQuestion()" [disabled]="currentQuestion() === 0">
-        previous
-      </button>
+    <div class="flex justify-between mt-4">
+      <p-button
+        variant="outlined"
+        severity="contrast"
+        (click)="prevQuestion()"
+        [disabled]="currentQuestion() === 0"
+      >
+        Previous
+      </p-button>
       @if (currentQuestion() < questions().length - 1) {
-      <button
+      <p-button
+        variant="outlined"
+        severity="contrast"
         (click)="nextQuestion()"
         [disabled]="answers()[question().id] === undefined"
       >
-        next
-      </button>
+        Next
+      </p-button>
       }@else {
-      <button (click)="handleSubmit()" [disabled]="submitDisabled()">
+      <p-button
+        variant="outlined"
+        severity="success"
+        (click)="handleSubmit()"
+        [disabled]="submitDisabled()"
+      >
         Submit
-      </button>
+      </p-button>
       }
     </div>
   </div>
 
   <div class="overview-section">
-    <div><h3>Question overview</h3></div>
+    <div><h4>Question overview</h4></div>
 
     <div class="overview-buttons">
       @for (item of questions(); track $index) {
