@@ -82,19 +82,20 @@
     </div>
   </div>
 
-  <div class="overview-section">
+  <div class="card">
     <div><h4>Question overview</h4></div>
 
-    <div class="overview-buttons">
+    <div class="grid grid-cols-10 mb-4 gap-4">
       @for (item of questions(); track $index) {
       <button
+        class="w-10 h-10 rounded-sm cursor-pointer text-black font-semibold"
         (click)="currentQuestion.set($index)"
-        [style.backgroundColor]="
+        [class]="
           currentQuestion() === $index
-            ? 'purple'
+            ? 'bg-purple-500'
             : answers()[questions()[$index].id] !== undefined
-            ? 'green'
-            : 'gray'
+            ? 'bg-green-500'
+            : 'bg-gray-500'
         "
       >
         {{ $index + 1 }}
@@ -102,18 +103,18 @@
       }
     </div>
 
-    <div class="overview-tips">
-      <div class="current">
-        <div></div>
-        <span>Current</span>
+    <div class="mt-5 flex gap-4 justify-center">
+      <div class="flex">
+        <div class="w-5 h-5 bg-purple-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Current</span>
       </div>
-      <div class="answered">
-        <div></div>
-        <span>Answered</span>
+      <div class="flex">
+        <div class="w-5 h-5 bg-green-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Answered</span>
       </div>
-      <div class="unanswered">
-        <div></div>
-        <span>Unanswered</span>
+      <div class="flex">
+        <div class="w-5 h-5 bg-gray-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Unanswered</span>
       </div>
     </div>
   </div>
