@@ -1,40 +1,7 @@
+.section {
+    margin-inline: 10%;
 
-.analysis {
-
-   
-
-
-    .interpretation {
-        background-color: rgb(3, 4, 73);
-        padding: 2rem;
-
-        h2 {
-            margin-bottom: 1rem;
-        }
-
-        .score {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-    }
-
-    .statistics {
-        background-color: rgb(12, 14, 90);
-        padding: 2rem;
-
-        h2 {
-            margin-bottom: 1rem;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-
-            span:last-child {
-                font-weight: 600;
-            }
-        }
+    @media (max-width: 900px) {
+        margin-inline: 0;
     }
 }

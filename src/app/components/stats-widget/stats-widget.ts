@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-stats-widget',
@@ -10,4 +10,7 @@ export class StatsWidget {
   public text = input.required<string>();
   public score = input.required<number>();
   public icon = input.required<string>();
+  public twClass = input<string>('text-blue-500');
+
+  public className = computed(() => `${this.icon()}  ${this.twClass()}`);
 }

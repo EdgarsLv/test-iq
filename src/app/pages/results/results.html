@@ -2,7 +2,7 @@
   <div class="card flex justify-between items-center">
     <div>
       <h4>Your IQ Test results</h4>
-      <p class="text-muted-color">Edgars (43)</p>
+      <p class="text-muted-color font-semibold">Edgars (43)</p>
     </div>
     <div>
       <p-avatar label="EP" size="xlarge" />
@@ -18,26 +18,31 @@
     <app-stats-widget
       text="Highest score"
       [score]="stats().highest"
+      twClass="text-amber-500"
       icon="pi pi-trophy"
     />
     <app-stats-widget
       text="Average score"
       [score]="stats().average"
+      twClass="text-teal-500"
       icon="pi pi-chart-bar"
     />
     <app-stats-widget
       text="Improvement"
       [score]="stats().improvement"
+      twClass="text-green-500"
       icon="pi pi-chart-line"
     />
     <app-stats-widget
       text="Tests taken"
       [score]="stats().totalTests"
+      twClass="text-indigo-500"
       icon="pi pi-calendar-times"
     />
     <app-stats-widget
       text="Average time"
       [score]="stats().averageTime"
+      twClass="text-purple-500"
       icon="pi pi-stopwatch"
     />
   </div>
@@ -84,47 +89,50 @@
     </p-table>
   </div>
 
-  <div class="analysis">
-    <div class="interpretation">
-      <h2>Score interpretation</h2>
-      <div class="score">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="card mb-0!">
+      <h4>Score interpretation</h4>
+
+      <div class="flex justify-between mb-1">
         <span>130+ (Exceptional)</span>
         <span [style.color]="'purple'">2%</span>
       </div>
-      <div class="score">
+      <div class="flex justify-between mb-1">
         <span>115-129 (Above Average)</span>
         <span [style.color]="'blue'">16%</span>
       </div>
-      <div class="score">
+      <div class="flex justify-between mb-1">
         <span>100-114 (Average)</span>
         <span [style.color]="'green'">50%</span>
       </div>
-      <div class="score">
+      <div class="flex justify-between mb-1">
         <span>85-99 (Below Average)</span>
-        <span [style.color]="'yellow'">16%</span>
+        <span [style.color]="'orange'">16%</span>
       </div>
-      <div class="score">
+      <div class="flex justify-between">
         <span>Below 85 (Low)</span>
         <span [style.color]="'red'">16%</span>
       </div>
     </div>
 
-    <div class="statistics">
-      <h2>Your Statistics</h2>
+    <div class="card mt-5 md:mt-0">
+      <h4>Your Statistics</h4>
 
-      <div class="stats">
-        <span>Current Level:</span>
-        <span [style.color]="getScoreColor(stats()!.average)">
+      <div class="flex justify-between mb-2">
+        <span>Current level:</span>
+        <span class="font-bold" [style.color]="getScoreLevel(stats()!.average)">
           {{ curretLevel() }}
         </span>
       </div>
-      <div class="stats">
-        <span>Score Range:</span>
-        <span>{{ stats().lowest }} - {{ stats().highest }}</span>
+      <div class="flex justify-between mb-2">
+        <span>Score range:</span>
+        <span class="font-bold"
+          >{{ stats().lowest }} - {{ stats().highest }}</span
+        >
       </div>
-      <div class="stats">
+      <div class="flex justify-between mb-2">
         <span>Consistency:</span>
-        <span> {{ consistency() }} </span>
+        <span class="font-bold"> {{ consistency() }} </span>
       </div>
     </div>
   </div>

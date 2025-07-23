@@ -112,6 +112,14 @@ export class Results {
     return 'danger';
   }
 
+  public getScoreLevel(score: number): string {
+    if (score >= 130) return 'purple';
+    if (score >= 115) return 'blue';
+    if (score >= 100) return 'green';
+    if (score >= 85) return 'orange';
+    return 'red';
+  }
+
   public getScoreGradient(score: number): string {
     if (score >= 130) return 'bg-gradient-to-r from-purple-600 to-pink-600';
     if (score >= 115) return 'bg-gradient-to-r from-blue-600 to-cyan-600';
