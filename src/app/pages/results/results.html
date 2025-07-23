@@ -1,5 +1,5 @@
 <div class="section">
-  <div class="card mb-0 flex justify-between items-center">
+  <div class="card flex justify-between items-center">
     <div>
       <h4>Your IQ Test results</h4>
       <p class="text-muted-color">Edgars (43)</p>
@@ -42,37 +42,46 @@
     />
   </div>
 
-  <div class="timeline">
-    <div><h2>Score Timeline</h2></div>
+  <div class="card mt-7">
+    <h4>Score Timeline</h4>
 
-    <div>
-      <div class="timeline-header">
-        <div>Test #</div>
-        <div>Date</div>
-        <div>Score</div>
-        <div>Time</div>
-        <div>Performance</div>
-      </div>
-
-      @for (result of testResults(); track $index) {
-      <div class="timeline-data">
-        <div>#{{ $index + 1 }}</div>
-        <div>{{ result.date | date : "dd.MM.yyyy" }}</div>
-        <div [style.color]="getScoreColor(result.iqScore)">
-          {{ result.iqScore }}
-        </div>
-        <div>{{ timeInMinutes(result) }}m</div>
-        <div>
-          <div class="progressbar">
-            <div
-              [style.backgroundColor]="getScoreColor(result.iqScore)"
-              [style.width]="progressWidth(result)"
-            ></div>
-          </div>
-        </div>
-      </div>
-      }
-    </div>
+    <p-table
+      [value]="testResults()"
+      [paginator]="true"
+      [rows]="5"
+      [alwaysShowPaginator]="false"
+    >
+      <ng-template #header>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Score</th>
+          <th>Time</th>
+          <th>Performance</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr>
+          <td>{{ item.order }}</td>
+          <td>{{ item.date | date : "dd.MM.yyyy" }}</td>
+          <td>
+            <p-tag
+              [value]="item.iqScore"
+              [severity]="getScoreColor(item.iqScore)"
+            />
+          </td>
+          <td>{{ timeInMinutes(item) }}m</td>
+          <td>
+            <p-progressbar
+              [value]="progressWidth(item)"
+              [valueStyleClass]="getScoreGradient(item.iqScore)"
+              [showValue]="false"
+              [style]="{ height: '0.6rem' }"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 
   <div class="analysis">

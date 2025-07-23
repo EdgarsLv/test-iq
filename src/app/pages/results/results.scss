@@ -1,46 +1,6 @@
 
-.timeline {
-    background-color: rgb(51, 3, 95);
-    margin-top: 1rem;
-    padding: 2rem;
-
-    h2 {
-        margin-bottom: 1rem;
-    }
-
-    .timeline-header {
-        display: grid;
-        grid-template-columns: 2fr 3fr 2fr 2fr 3fr;
-    }
-
-       .timeline-data {
-        display: grid;
-        grid-template-columns: 2fr 3fr 2fr 2fr 3fr;
-        align-items: center;
-        margin-top: 1rem;
-
-        div {
-            background-color: rgb(1, 45, 84);
-            padding: 0.5rem 0;
-
-            &:first-child {
-                padding-left: 0.5rem;
-            }
-        }
-
-        .progressbar {
-            padding: 1px !important;
-            width: 100%;
-            background-color: gray;
-        }
-    }
-}
-
 .analysis {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 1rem;
+
    
 
 

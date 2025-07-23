@@ -3,6 +3,9 @@ import { TestResult } from '../test/test';
 import { CommonModule } from '@angular/common';
 import { StatsWidget } from '../../components/stats-widget/stats-widget';
 import { AvatarModule } from 'primeng/avatar';
+import { TagModule } from 'primeng/tag';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TableModule } from 'primeng/table';
 
 type TestStats = {
   average: number;
@@ -16,7 +19,14 @@ type TestStats = {
 
 @Component({
   selector: 'app-results',
-  imports: [CommonModule, StatsWidget, AvatarModule],
+  imports: [
+    CommonModule,
+    StatsWidget,
+    ProgressBarModule,
+    AvatarModule,
+    TagModule,
+    TableModule,
+  ],
   templateUrl: './results.html',
   styleUrl: './results.scss',
 })
@@ -90,43 +100,23 @@ export class Results {
     return stats;
   }
 
-  //   const stats = useMemo(() => {
-  //   if (!results || results.length === 0) return null;
-
-  //   const scores = results.map(r => r.score);
-  //   const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
-  //   const maxScore = Math.max(...scores);
-  //   const minScore = Math.min(...scores);
-  //   const totalTime = results.reduce((sum, r) => sum + r.timeSpent, 0);
-  //   const avgTime = Math.round(totalTime / results.length / 60);
-
-  //   return {
-  //     average: avgScore,
-  //     highest: maxScore,
-  //     lowest: minScore,
-  //     totalTests: results.length,
-  //     averageTime: avgTime,
-  //     improvement: results.length > 1 ? scores[scores.length - 1] - scores[0] : 0
-  //   };
-  // }, [results]);
-
   public progressWidth(result: TestResult): any {
-    return `${Math.min((result.iqScore / 150) * 100, 100)}%`;
+    return `${Math.min((result.iqScore / 150) * 100, 100)}`;
   }
 
   public getScoreColor(score: number): string {
-    if (score >= 130) return 'purple';
-    if (score >= 115) return 'blue';
-    if (score >= 100) return 'green';
-    if (score >= 85) return 'yellow';
-    return 'red';
+    if (score >= 130) return 'contrast';
+    if (score >= 115) return 'info';
+    if (score >= 100) return 'success';
+    if (score >= 85) return 'warn';
+    return 'danger';
   }
 
   public getScoreGradient(score: number): string {
-    if (score >= 130) return 'from-purple-600 to-pink-600';
-    if (score >= 115) return 'from-blue-600 to-cyan-600';
-    if (score >= 100) return 'from-green-600 to-emerald-600';
-    if (score >= 85) return 'from-yellow-600 to-orange-600';
-    return 'from-red-600 to-rose-600';
+    if (score >= 130) return 'bg-gradient-to-r from-purple-600 to-pink-600';
+    if (score >= 115) return 'bg-gradient-to-r from-blue-600 to-cyan-600';
+    if (score >= 100) return 'bg-gradient-to-r from-green-600 to-emerald-600';
+    if (score >= 85) return 'bg-gradient-to-r from-yellow-600 to-orange-600';
+    return 'bg-gradient-to-r from-red-600 to-rose-600';
   }
 }

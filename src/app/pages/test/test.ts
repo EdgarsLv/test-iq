@@ -15,6 +15,7 @@ export type TestResult = {
   iqScore: number;
   timeSpent: number;
   date: string;
+  order: number;
 };
 
 @Component({
@@ -127,6 +128,7 @@ export class Test {
       iqScore,
       timeSpent,
       date: new Date().toISOString(),
+      order: 0,
     };
 
     this.saveTestResult(result);
@@ -136,7 +138,10 @@ export class Test {
     const testResults = JSON.parse(
       localStorage.getItem('iqTestResults') || '[]'
     );
-    const newResults = [...testResults, result];
+    const newResults = [
+      ...testResults,
+      { ...result, order: testResults.length + 1 },
+    ];
 
     localStorage.setItem('iqTestResults', JSON.stringify(newResults));
   }
