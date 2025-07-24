@@ -51,9 +51,22 @@ export class Test {
 
   private destroy$ = new Subject<void>();
 
+  private counter = 0;
+  private intervalId: any = null;
+
   ngOnInit(): void {
     this.startCountdown();
+
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
+
+  private handleVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') {
+      this.startCounter();
+    } else {
+      this.resetCounter();
+    }
+  };
 
   private startCountdown(): void {
     interval(1000)
@@ -167,9 +180,34 @@ export class Test {
     }
   };
 
+  private startCounter(): void {
+    this.resetCounter(); // safety
+    this.intervalId = setInterval(() => {
+      this.counter++;
+      if (this.counter >= 5) {
+        alert('Tab has been inactive for 10 seconds!');
+        this.resetCounter(); // stop after alert
+      }
+    }, 1000);
+  }
+
+  private resetCounter(): void {
+    this.counter = 0;
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.resetCounter();
+
+    document.removeEventListener(
+      'visibilitychange',
+      this.handleVisibilityChange
+    );
   }
 }
 

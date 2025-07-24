@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import './firebase.config';
 
 @Component({
@@ -9,5 +10,20 @@ import './firebase.config';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('test-iq');
+  constructor() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        console.log(user, uid);
+        // ...
+      } else {
+        // User is signed out
+        console.log('signed out');
+        // ...
+      }
+    });
+  }
 }
