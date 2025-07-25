@@ -38,7 +38,6 @@ export class Results {
   public authUserService = inject(AuthUser);
   public testResultService = inject(TestResultService);
 
-  public testResults = signal<TTestResult[]>([]);
   public stats = computed<TestStats>(() => this.getStats());
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
@@ -50,14 +49,6 @@ export class Results {
     loader: ({ params }) =>
       this.testResultService.getTestResultsByUserId(params),
   });
-
-  ngOnInit(): void {
-    const testResults = JSON.parse(
-      localStorage.getItem('iqTestResults') || '[]'
-    );
-
-    this.testResults.set(testResults);
-  }
 
   public timeInMinutes(result: TTestResult): number {
     return Math.round(result.timeSpent / 60);
@@ -86,30 +77,27 @@ export class Results {
   }
 
   private getStats(): TestStats {
-    const scores = this.testResults().map((r) => r.score);
+    const result = this.results.value() || [];
+
+    const scores = result.map((r) => r.score);
     const avgScore = Math.round(
       scores.reduce((a, b) => a + b, 0) / scores.length
     );
-    const currentScore = this.testResults().at(-1)?.score ?? 0;
+    const currentScore = result.at(-1)?.score ?? 0;
     const maxScore = Math.max(...scores);
     const minScore = Math.min(...scores);
-    const totalTime = this.testResults().reduce(
-      (sum, r) => sum + r.timeSpent,
-      0
-    );
-    const avgTime = Math.round(totalTime / this.testResults().length / 60);
+    const totalTime = result.reduce((sum, r) => sum + r.timeSpent, 0);
+    const avgTime = Math.round(totalTime / result.length / 60);
 
     const stats = {
       currentScore,
       average: avgScore,
       highest: maxScore,
       lowest: minScore,
-      totalTests: this.testResults().length,
+      totalTests: result.length,
       averageTime: avgTime,
       improvement:
-        this.testResults().length > 1
-          ? scores[scores.length - 1] - scores[0]
-          : 0,
+        result.length > 1 ? scores[scores.length - 1] - scores[0] : 0,
     };
 
     return stats;

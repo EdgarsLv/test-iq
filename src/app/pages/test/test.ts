@@ -20,14 +20,6 @@ type Questions = {
   difficulty: string;
 };
 
-// export type TestResult = {
-//   id: number;
-//   score: number;
-//   timeSpent: number;
-//   date: string;
-//   order: number;
-// };
-
 @Component({
   selector: 'app-test',
   imports: [ButtonModule, ProgressBarModule, TagModule],
@@ -169,20 +161,15 @@ export class Test {
   }
 
   private async saveTestResult(result: TTestResult): Promise<void> {
-    const testResults = JSON.parse(
-      localStorage.getItem('iqTestResults') || '[]'
+    const allResults = 1;
+
+    await this.testResultService.storeTestResult(
+      {
+        ...result,
+        order: allResults + 1,
+      },
+      this.user().uid
     );
-    const newResults = [
-      ...testResults,
-      { ...result, order: testResults.length + 1 },
-    ];
-
-    await this.testResultService.storeTestResult({
-      ...result,
-      order: testResults.length + 1,
-    });
-
-    localStorage.setItem('iqTestResults', JSON.stringify(newResults));
   }
 
   public nextQuestion = () => {

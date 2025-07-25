@@ -23,8 +23,6 @@ export type TTestResult = {
 export class TestResult {
   public authUserService = inject(AuthUser);
 
-  public userId = this.authUserService.authUser()?.uid;
-
   public async getTestResultsByUserId(userId: string): Promise<TTestResult[]> {
     const testResultsRef = collection(db, `users/${userId}/testResults`);
     const q = query(testResultsRef, orderBy('date', 'asc'));
@@ -39,7 +37,10 @@ export class TestResult {
     return testResults;
   }
 
-  public async storeTestResult(result: TTestResult): Promise<void> {
-    await addDoc(collection(db, `users/${this.userId}/testResults`), result);
+  public async storeTestResult(
+    result: TTestResult,
+    userId: string
+  ): Promise<void> {
+    await addDoc(collection(db, `users/${userId}/testResults`), result);
   }
 }

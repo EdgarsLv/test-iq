@@ -4,7 +4,7 @@
       <h4>Your IQ Test results</h4>
       <p class="text-muted-color font-semibold">{{ user()?.displayName }}</p>
     </div>
-    <div>{{ results.value() | json }}</div>
+
     <div>
       <p-avatar [image]="user()?.photoURL" size="xlarge" />
     </div>
@@ -52,7 +52,7 @@
     <h4>Score Timeline</h4>
 
     <p-table
-      [value]="testResults()"
+      [value]="results.value() || []"
       [paginator]="true"
       [rows]="5"
       [alwaysShowPaginator]="false"
@@ -72,8 +72,8 @@
           <td>{{ item.date | date : "dd.MM.yyyy" }}</td>
           <td>
             <p-tag
-              [value]="item.iqScore"
-              [severity]="getScoreColor(item.iqScore)"
+              [value]="item.score"
+              [severity]="getScoreColor(item.score)"
             />
           </td>
           <td>{{ timeInMinutes(item) }}m</td>
