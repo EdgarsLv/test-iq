@@ -1,11 +1,15 @@
-import { Component, computed, signal } from '@angular/core';
-import { TestResult } from '../test/test';
+import { Component, computed, inject, resource, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatsWidget } from '../../components/stats-widget/stats-widget';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { AuthUser } from '../../services/auth-user';
+import {
+  TestResult as TestResultService,
+  TTestResult,
+} from '../../services/test-result';
 
 type TestStats = {
   average: number;
@@ -31,10 +35,21 @@ type TestStats = {
   styleUrl: './results.scss',
 })
 export class Results {
-  public testResults = signal<TestResult[]>([]);
+  public authUserService = inject(AuthUser);
+  public testResultService = inject(TestResultService);
+
+  public testResults = signal<TTestResult[]>([]);
   public stats = computed<TestStats>(() => this.getStats());
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
+
+  public user = this.authUserService.authUser;
+
+  public results = resource({
+    params: () => this.user()?.uid,
+    loader: ({ params }) =>
+      this.testResultService.getTestResultsByUserId(params),
+  });
 
   ngOnInit(): void {
     const testResults = JSON.parse(
@@ -44,7 +59,7 @@ export class Results {
     this.testResults.set(testResults);
   }
 
-  public timeInMinutes(result: TestResult): number {
+  public timeInMinutes(result: TTestResult): number {
     return Math.round(result.timeSpent / 60);
   }
 
@@ -71,11 +86,11 @@ export class Results {
   }
 
   private getStats(): TestStats {
-    const scores = this.testResults().map((r) => r.iqScore);
+    const scores = this.testResults().map((r) => r.score);
     const avgScore = Math.round(
       scores.reduce((a, b) => a + b, 0) / scores.length
     );
-    const currentScore = this.testResults().at(-1)?.iqScore ?? 0;
+    const currentScore = this.testResults().at(-1)?.score ?? 0;
     const maxScore = Math.max(...scores);
     const minScore = Math.min(...scores);
     const totalTime = this.testResults().reduce(
@@ -100,8 +115,8 @@ export class Results {
     return stats;
   }
 
-  public progressWidth(result: TestResult): any {
-    return `${Math.min((result.iqScore / 150) * 100, 100)}`;
+  public progressWidth(result: TTestResult): any {
+    return `${Math.min((result.score / 150) * 100, 100)}`;
   }
 
   public getScoreColor(score: number): string {

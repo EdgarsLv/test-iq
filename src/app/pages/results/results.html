@@ -2,10 +2,11 @@
   <div class="card flex justify-between items-center">
     <div>
       <h4>Your IQ Test results</h4>
-      <p class="text-muted-color font-semibold">Edgars (43)</p>
+      <p class="text-muted-color font-semibold">{{ user()?.displayName }}</p>
     </div>
+    <div>{{ results.value() | json }}</div>
     <div>
-      <p-avatar label="EP" size="xlarge" />
+      <p-avatar [image]="user()?.photoURL" size="xlarge" />
     </div>
   </div>
 

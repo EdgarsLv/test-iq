@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { TestResult } from '../test/test';
+import { TTestResult } from '../../services/test-result';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +9,8 @@ import { TestResult } from '../test/test';
   styleUrl: './home.scss',
 })
 export class Home {
-  public testResults = signal<TestResult[]>([]);
-  public curretScore = computed(() => this.testResults().at(-1)?.iqScore ?? 0);
+  public testResults = signal<TTestResult[]>([]);
+  public curretScore = computed(() => this.testResults().at(-1)?.score ?? 0);
 
   ngOnInit(): void {
     const testResults = JSON.parse(

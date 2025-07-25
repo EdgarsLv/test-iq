@@ -1,8 +1,15 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
+import { AuthUser } from '../../services/auth-user';
+import {
+  TestResult as TestResultService,
+  TTestResult,
+} from '../../services/test-result';
 
 type Questions = {
   id: number;
@@ -13,13 +20,13 @@ type Questions = {
   difficulty: string;
 };
 
-export type TestResult = {
-  id: number;
-  iqScore: number;
-  timeSpent: number;
-  date: string;
-  order: number;
-};
+// export type TestResult = {
+//   id: number;
+//   score: number;
+//   timeSpent: number;
+//   date: string;
+//   order: number;
+// };
 
 @Component({
   selector: 'app-test',
@@ -28,6 +35,9 @@ export type TestResult = {
   styleUrl: './test.scss',
 })
 export class Test {
+  public authUserService = inject(AuthUser);
+  public testResultService = inject(TestResultService);
+
   public questions = signal<Questions[]>(questions);
   public currentQuestion = signal<number>(0);
   public question = computed<Questions>(
@@ -50,6 +60,8 @@ export class Test {
   });
 
   private destroy$ = new Subject<void>();
+
+  public user = this.authUserService.authUser;
 
   private counter = 0;
   private intervalId: any = null;
@@ -146,8 +158,8 @@ export class Test {
     this.showResult.set(true);
 
     const result = {
-      id: Date.now(),
-      iqScore,
+      id: '',
+      score: iqScore,
       timeSpent,
       date: new Date().toISOString(),
       order: 0,
@@ -156,7 +168,7 @@ export class Test {
     this.saveTestResult(result);
   }
 
-  private saveTestResult(result: TestResult): void {
+  private async saveTestResult(result: TTestResult): Promise<void> {
     const testResults = JSON.parse(
       localStorage.getItem('iqTestResults') || '[]'
     );
@@ -164,6 +176,11 @@ export class Test {
       ...testResults,
       { ...result, order: testResults.length + 1 },
     ];
+
+    await this.testResultService.storeTestResult({
+      ...result,
+      order: testResults.length + 1,
+    });
 
     localStorage.setItem('iqTestResults', JSON.stringify(newResults));
   }
