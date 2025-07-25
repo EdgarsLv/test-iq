@@ -1,6 +1,8 @@
 import {
   ApplicationConfig,
+  inject,
   provideBrowserGlobalErrorListeners,
+  provideEnvironmentInitializer,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
@@ -10,6 +12,7 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
+import { AuthService } from './services/auth.service';
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -63,12 +66,20 @@ const MyPreset = definePreset(Aura, {
   },
 });
 
+export function provideAuthInitializer() {
+  return provideEnvironmentInitializer(() => {
+    const authService = inject(AuthService);
+    authService.initAuth();
+  });
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withViewTransitions()),
     provideAnimationsAsync(),
+    provideAuthInitializer(),
     providePrimeNG({
       ripple: true,
       theme: {

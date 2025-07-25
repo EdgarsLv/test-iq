@@ -10,6 +10,7 @@ import {
   TestResult as TestResultService,
   TTestResult,
 } from '../../services/test-result';
+import { AuthService } from '../../services/auth.service';
 
 type TestStats = {
   average: number;
@@ -35,14 +36,14 @@ type TestStats = {
   styleUrl: './results.scss',
 })
 export class Results {
-  public authUserService = inject(AuthUser);
   public testResultService = inject(TestResultService);
+  public authService = inject(AuthService);
 
   public stats = computed<TestStats>(() => this.getStats());
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
 
-  public user = this.authUserService.authUser;
+  public user = this.authService.authUser;
 
   public results = resource({
     params: () => this.user()?.uid,

@@ -3,13 +3,11 @@ import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
-import { AuthUser } from '../../services/auth-user';
 import {
   TestResult as TestResultService,
   TTestResult,
 } from '../../services/test-result';
+import { AuthService } from '../../services/auth.service';
 
 type Questions = {
   id: number;
@@ -27,7 +25,7 @@ type Questions = {
   styleUrl: './test.scss',
 })
 export class Test {
-  public authUserService = inject(AuthUser);
+  public authService = inject(AuthService);
   public testResultService = inject(TestResultService);
 
   public questions = signal<Questions[]>(questions);
@@ -53,7 +51,7 @@ export class Test {
 
   private destroy$ = new Subject<void>();
 
-  public user = this.authUserService.authUser;
+  public user = this.authService.authUser;
 
   private counter = 0;
   private intervalId: any = null;
@@ -161,15 +159,7 @@ export class Test {
   }
 
   private async saveTestResult(result: TTestResult): Promise<void> {
-    const allResults = 1;
-
-    await this.testResultService.storeTestResult(
-      {
-        ...result,
-        order: allResults + 1,
-      },
-      this.user().uid
-    );
+    await this.testResultService.storeTestResult(result, this.user()!.uid);
   }
 
   public nextQuestion = () => {
