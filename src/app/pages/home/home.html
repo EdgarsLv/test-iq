@@ -32,18 +32,22 @@
     </div>
   </div>
 
+  @if (user()) {
   <div class="flex gap-4 justify-center">
-    <p-button>SET UP PROFILE</p-button>
-    <p-button severity="contrast">START IQ TEST</p-button>
-    <p-button severity="info">VIEW RESULTS</p-button>
+    <p-button (onClick)="setProfile()">SET UP PROFILE</p-button>
+    <p-button severity="contrast" (onClick)="startTest()"
+      >START IQ TEST</p-button
+    >
+    <p-button severity="info" (onClick)="viewResult()">VIEW RESULTS</p-button>
   </div>
-
-  <div class="card text-center mt-7">
-    <h4>Your last score</h4>
-    <p class="text-2xl font-semibold">{{ curretScore() }}</p>
-    <p>
-      <span class="mr-4">Tests completed:</span>
-      <span class="font-semibold">{{ testResults().length }}</span>
-    </p>
+  }@else {
+  <div class="flex justify-center">
+    <p-button
+      icon="pi pi-google"
+      severity="contrast"
+      label="Sign in with Google"
+      (onClick)="loginWithGoogle()"
+    ></p-button>
   </div>
+  }
 </div>

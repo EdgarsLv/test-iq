@@ -5,7 +5,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
-import { AuthUser } from '../../services/auth-user';
 import {
   TestResult as TestResultService,
   TTestResult,

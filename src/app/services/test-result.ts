@@ -1,5 +1,4 @@
-import { inject, Injectable } from '@angular/core';
-import { AuthUser } from './auth-user';
+import { Injectable } from '@angular/core';
 import {
   getDocs,
   collection,
@@ -21,8 +20,6 @@ export type TTestResult = {
   providedIn: 'root',
 })
 export class TestResult {
-  public authUserService = inject(AuthUser);
-
   public async getTestResultsByUserId(userId: string): Promise<TTestResult[]> {
     const testResultsRef = collection(db, `users/${userId}/testResults`);
     const q = query(testResultsRef, orderBy('date', 'asc'));
