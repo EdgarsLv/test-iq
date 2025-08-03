@@ -87,7 +87,12 @@
       }
 
       <div class="mt-8">
-        <p-button type="submit" label="Save" styleClass="w-full" />
+        <p-button
+          [disabled]="isSubmiting()"
+          type="submit"
+          label="Save"
+          styleClass="w-full"
+        />
       </div>
     </form>
   </div>

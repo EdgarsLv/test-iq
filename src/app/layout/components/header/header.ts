@@ -1,16 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '../../service/layout.service';
 import { AuthService } from '../../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
-import { MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
+import { Popover } from 'primeng/popover';
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, CommonModule, Menu, StyleClassModule, ButtonModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    PopoverModule,
+
+    StyleClassModule,
+    ButtonModule,
+  ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -19,33 +26,35 @@ export class Header {
   public layoutService = inject(LayoutService);
   private router = inject(Router);
 
-  items: MenuItem[] | undefined;
+  @ViewChild('op') op!: Popover;
+
+  items: any[] = [];
+
+  toggle(event: any) {
+    this.op.toggle(event);
+  }
+
+  public close(): void {
+    this.op.hide();
+  }
 
   ngOnInit() {
     this.items = [
-      { separator: true },
-      {
-        label: 'Profile',
-        icon: 'pi pi-user-edit',
-        command: () => {
-          this.router.navigate(['profile']);
-        },
-      },
       {
         label: 'Start Test',
         icon: 'pi pi-clock',
-        command: () => {
-          this.router.navigate(['test']);
-        },
+        link: 'test',
       },
       {
         label: 'View Results',
         icon: 'pi pi-chart-bar',
-        command: () => {
-          this.router.navigate(['results']);
-        },
+        link: 'results',
       },
-      { separator: true },
+      {
+        label: 'View Statistics',
+        icon: 'pi pi-chart-scatter',
+        link: 'statistics',
+      },
     ];
   }
 

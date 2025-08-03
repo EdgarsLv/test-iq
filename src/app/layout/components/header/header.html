@@ -51,58 +51,80 @@
       size="small"
       icon="pi pi-moon"
     />
-
-    <p-menu #menu [model]="items" [popup]="true">
-      <ng-template #start>
+    <p-popover #op>
+      <div class="flex flex-col w-[12rem]">
         <a
           pRipple
           routerLink="/"
-          class="flex items-center p-menu-item-link mt-1 ml-1"
-          (click)="menu.toggle($event)"
+          class="flex items-center p-3 hover:bg-emphasis cursor-pointer"
+          (click)="close()"
         >
           <span class="pi pi-home"></span>
-          <span class="ml-2">Home</span>
+          <span class="ml-3">Home</span>
         </a>
-      </ng-template>
+        <div class="border-b border-slate-500 my-2"></div>
 
-      <ng-template #item let-item>
-        <a pRipple class="flex items-center p-menu-item-link">
-          <span [class]="item.icon"></span>
-          <span class="ml-2">{{ item.label }}</span>
-          @if (!authService.authUser()) {
+        <a
+          pRipple
+          class="flex items-center p-3 hover:bg-emphasis cursor-pointer"
+          routerLink="profile"
+          (click)="close()"
+        >
+          <span class="pi pi-user-edit"></span>
+          <span class="ml-3">Profile</span>
+          @if (authService.authUser()) {
           <span class="ml-auto text-muted-color">
             <i class="pi pi-lock"></i>
           </span>
           }
         </a>
-      </ng-template>
 
-      <ng-template #end>
-        @if (authService.authUser()) {
+        <!-- NAVIGATION -->
+        @for (item of items; track $index) {
         <a
           pRipple
-          class="flex items-center p-menu-item-link mb-1 ml-1 text-red-400"
+          class="flex items-center p-3 hover:bg-emphasis cursor-pointer"
+          [routerLink]="item.link"
+          (click)="close()"
+        >
+          <span [class]="item.icon"></span>
+          <span class="ml-3">{{ item.label }}</span>
+          @if (authService.authUser()) {
+          <span class="ml-auto text-muted-color">
+            <i class="pi pi-lock"></i>
+          </span>
+          }
+        </a>
+        }
+
+        <!-- ACTIONS -->
+        @if (authService.authUser()) {
+        <div class="border-t border-slate-500 my-2"></div>
+        <a
+          pRipple
+          class="flex items-center text-red-400 p-3 cursor-pointer"
           (click)="signOut()"
-          (click)="menu.toggle($event)"
+          (click)="close()"
         >
           <span class="pi pi-sign-out"></span>
-          <span class="ml-2">Sign Out</span>
+          <span class="ml-3">Sign Out</span>
         </a>
         }@else {
         <a
           pRipple
           routerLink="login"
-          class="flex items-center p-menu-item-link mb-1 ml-1 text-green-400"
-          (click)="menu.toggle($event)"
+          class="flex items-center p-menu-item-link text-green-400 p-3 hover:bg-emphasis cursor-pointer"
+          (click)="close()"
         >
           <span class="pi pi-sign-in"></span>
           <span class="ml-2">Sign In</span>
         </a>
         }
-      </ng-template>
-    </p-menu>
+      </div>
+    </p-popover>
+
     <p-button
-      (click)="menu.toggle($event)"
+      (onClick)="toggle($event)"
       [outlined]="true"
       severity="contrast"
       icon="pi pi-bars"

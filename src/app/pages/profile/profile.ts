@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +13,7 @@ import { Message } from 'primeng/message';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,9 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Profile {
   public authService = inject(AuthService);
+  private router = inject(Router);
 
+  public isSubmiting = signal<boolean>(false);
   private formSubmitted = false;
 
   public profileForm: FormGroup = new FormGroup({
@@ -57,6 +60,7 @@ export class Profile {
     this.formSubmitted = true;
 
     if (this.profileForm.valid) {
+      this.isSubmiting.set(true);
       const userId = this.authService.authUser()!.uid;
       const age = this.profileForm.controls['age'].value;
       const sex = this.profileForm.controls['gender'].value;
@@ -69,6 +73,7 @@ export class Profile {
 
       this.profileForm.reset();
       this.formSubmitted = false;
+      this.router.navigate(['/test']);
     }
   }
 }
