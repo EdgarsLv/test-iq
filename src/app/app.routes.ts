@@ -6,6 +6,7 @@ import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth.guard';
 import { PublicLayout } from './layout/public-layout/public-layout';
+import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/results/results').then((c) => c.Results),
         canActivate: [authGuard],
+      },
+      {
+        path: 'login',
+        loadComponent: () => import('./pages/login/login').then((c) => c.Login),
+        canActivate: [guestGuard],
       },
       {
         path: '**',
