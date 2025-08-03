@@ -29,8 +29,8 @@
     </a>
   </div>
 
-  <div class="layout-topbar-actions">
-    <div class="flex gap-4 font-semibold items-center">
+  <div class="flex items-center ml-auto gap-x-2">
+    <div class="flex font-semibold items-center">
       @if (authService.authUser()) {
       <p-button
         label="Sign Out"
@@ -53,35 +53,27 @@
       }
     </div>
 
-    <div class="layout-config-menu">
-      <button
-        type="button"
-        class="layout-topbar-action"
-        (click)="toggleDarkMode()"
-      >
-        <i
-          [ngClass]="{
-            'pi ': true,
-            'pi-moon': layoutService.isDarkTheme(),
-            'pi-sun': !layoutService.isDarkTheme()
-          }"
-        ></i>
-      </button>
+    <p-button
+      (click)="toggleDarkMode()"
+      [outlined]="true"
+      severity="secondary"
+      size="small"
+      icon="pi pi-moon"
+    />
 
-      <p-menu #menu [model]="items" [popup]="true">
-        <!-- <ng-template #item let-item>
+    <p-menu #menu [model]="items" [popup]="true">
+      <!-- <ng-template #item let-item>
           <a pRipple class="flex items-center p-menu-item-link">
             <span [class]="item.icon"></span>
             <span class="ml-2">{{ item.label }}</span>
           </a>
         </ng-template> -->
-      </p-menu>
-      <p-button
-        (click)="menu.toggle($event)"
-        [outlined]="true"
-        severity="contrast"
-        icon="pi pi-bars"
-      />
-    </div>
+    </p-menu>
+    <p-button
+      (click)="menu.toggle($event)"
+      [outlined]="true"
+      severity="contrast"
+      icon="pi pi-bars"
+    />
   </div>
 </div>

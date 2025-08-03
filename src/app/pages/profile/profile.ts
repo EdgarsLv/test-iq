@@ -1,95 +1,67 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from 'firebase/auth';
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { RadioButton } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { auth } from '../../firebase.config';
-
-const provider = new GoogleAuthProvider();
+import { InputNumberModule } from 'primeng/inputnumber';
+import { Message } from 'primeng/message';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase.config';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
-  imports: [InputTextModule, FormsModule, ButtonModule],
+  imports: [
+    InputTextModule,
+    Message,
+    ReactiveFormsModule,
+    InputNumberModule,
+    RadioButton,
+    ButtonModule,
+  ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
 export class Profile {
-  public email = '';
-  public password = '';
+  public authService = inject(AuthService);
 
-  ngOnInit(): void {
-    auth.useDeviceLanguage();
+  private formSubmitted = false;
+
+  public profileForm: FormGroup = new FormGroup({
+    age: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(18),
+      Validators.max(99),
+    ]),
+    gender: new FormControl<string>('', [Validators.required]),
+  });
+
+  public isInvalid(controlName: string) {
+    const control = this.profileForm.get(controlName);
+    return control?.invalid && (control.touched || this.formSubmitted);
   }
 
-  public signUp(): void {
-    createUserWithEmailAndPassword(auth, this.email, this.password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // ..
-      });
-  }
+  public async onSubmit(): Promise<void> {
+    this.formSubmitted = true;
 
-  public signIn(): void {
-    signInWithEmailAndPassword(auth, this.email, this.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  }
+    if (this.profileForm.valid) {
+      const userId = this.authService.authUser()!.uid;
+      const age = this.profileForm.controls['age'].value;
+      const sex = this.profileForm.controls['gender'].value;
 
-  public googleSignIn(): void {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-
-        console.log(user, token);
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        age: age,
+        gender: sex,
       });
-  }
 
-  public signOut(): void {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+      this.profileForm.reset();
+      this.formSubmitted = false;
+    }
   }
 }
