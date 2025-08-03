@@ -4,6 +4,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,15 +14,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Login {
   public authService = inject(AuthService);
-
-  email: string = '';
-
-  password: string = '';
+  private router = inject(Router);
 
   public async loginWithGoogle(): Promise<void> {
     try {
-      const userCred = await this.authService.googleSignIn();
-      console.log('User:', userCred.user);
+      await this.authService
+        .googleSignIn()
+        .then(() => this.router.navigate(['/profile']));
     } catch (err) {
       console.error('Login error:', err);
     }

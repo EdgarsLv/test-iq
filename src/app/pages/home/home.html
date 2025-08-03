@@ -34,11 +34,23 @@
 
   @if (user()) {
   <div class="flex gap-4 justify-center">
-    <p-button (onClick)="setProfile()">SET UP PROFILE</p-button>
-    <p-button severity="contrast" (onClick)="startTest()"
-      >START IQ TEST</p-button
-    >
-    <p-button severity="info" (onClick)="viewResult()">VIEW RESULTS</p-button>
+    <p-button
+      icon="pi pi-user-edit"
+      label="SET UP PROFILE"
+      (onClick)="setProfile()"
+    ></p-button>
+    <p-button
+      icon="pi pi-clock"
+      label="START IQ TEST"
+      severity="contrast"
+      (onClick)="startTest()"
+    ></p-button>
+    <p-button
+      icon="pi pi-chart-bar"
+      label="VIEW RESULTS"
+      severity="info"
+      (onClick)="viewResult()"
+    ></p-button>
   </div>
   }@else {
   <div class="flex justify-center mb-8">

@@ -29,8 +29,9 @@ export class Home {
 
   public async loginWithGoogle(): Promise<void> {
     try {
-      const userCred = await this.authService.googleSignIn();
-      console.log('User:', userCred.user);
+      await this.authService
+        .googleSignIn()
+        .then(() => this.router.navigate(['/profile']));
     } catch (err) {
       console.error('Login error:', err);
     }

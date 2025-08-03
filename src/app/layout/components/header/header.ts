@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, model } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '../../service/layout.service';
 import { AuthService } from '../../../services/auth.service';
@@ -17,8 +17,7 @@ import { Menu } from 'primeng/menu';
 export class Header {
   public authService = inject(AuthService);
   public layoutService = inject(LayoutService);
-
-  public data = model<any>();
+  private router = inject(Router);
 
   items: MenuItem[] | undefined;
 
@@ -26,30 +25,27 @@ export class Header {
     this.items = [
       { separator: true },
       {
-        label: 'Navigate',
-        items: [
-          {
-            label: 'Home',
-            icon: 'pi pi-home',
-            routerLink: '/',
-          },
-          {
-            label: 'Profile',
-            icon: 'pi pi-user-edit',
-            routerLink: 'profile',
-          },
-          {
-            label: 'Start Test',
-            icon: 'pi pi-clock',
-            routerLink: 'test',
-          },
-          {
-            label: 'View Results',
-            icon: 'pi pi-chart-bar',
-            routerLink: 'results',
-          },
-        ],
+        label: 'Profile',
+        icon: 'pi pi-user-edit',
+        command: () => {
+          this.router.navigate(['profile']);
+        },
       },
+      {
+        label: 'Start Test',
+        icon: 'pi pi-clock',
+        command: () => {
+          this.router.navigate(['test']);
+        },
+      },
+      {
+        label: 'View Results',
+        icon: 'pi pi-chart-bar',
+        command: () => {
+          this.router.navigate(['results']);
+        },
+      },
+      { separator: true },
     ];
   }
 
@@ -61,6 +57,6 @@ export class Header {
   }
 
   public signOut(): void {
-    this.authService.signOut();
+    this.authService.signOut().then(() => this.router.navigate(['/']));
   }
 }

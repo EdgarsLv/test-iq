@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -33,12 +33,19 @@ export class Profile {
   private formSubmitted = false;
 
   public profileForm: FormGroup = new FormGroup({
-    age: new FormControl<number | null>(null, [
+    age: new FormControl<number | undefined>(undefined, [
       Validators.required,
       Validators.min(18),
       Validators.max(99),
     ]),
     gender: new FormControl<string>('', [Validators.required]),
+  });
+
+  profileEffect = effect(() => {
+    const profile = this.authService.profile();
+    if (profile) {
+      this.profileForm.patchValue(profile);
+    }
   });
 
   public isInvalid(controlName: string) {

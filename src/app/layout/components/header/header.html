@@ -31,16 +31,7 @@
 
   <div class="flex items-center ml-auto gap-x-2">
     <div class="flex font-semibold items-center">
-      @if (authService.authUser()) {
-      <p-button
-        label="Sign Out"
-        size="small"
-        severity="danger"
-        icon="pi pi-sign-out"
-        [outlined]="true"
-        (onClick)="signOut()"
-      />
-      }@else {
+      @if (!authService.authUser()) {
       <a
         pButton
         size="small"
@@ -62,12 +53,53 @@
     />
 
     <p-menu #menu [model]="items" [popup]="true">
-      <!-- <ng-template #item let-item>
-          <a pRipple class="flex items-center p-menu-item-link">
-            <span [class]="item.icon"></span>
-            <span class="ml-2">{{ item.label }}</span>
-          </a>
-        </ng-template> -->
+      <ng-template #start>
+        <a
+          pRipple
+          routerLink="/"
+          class="flex items-center p-menu-item-link mt-1 ml-1"
+          (click)="menu.toggle($event)"
+        >
+          <span class="pi pi-home"></span>
+          <span class="ml-2">Home</span>
+        </a>
+      </ng-template>
+
+      <ng-template #item let-item>
+        <a pRipple class="flex items-center p-menu-item-link">
+          <span [class]="item.icon"></span>
+          <span class="ml-2">{{ item.label }}</span>
+          @if (!authService.authUser()) {
+          <span class="ml-auto text-muted-color">
+            <i class="pi pi-lock"></i>
+          </span>
+          }
+        </a>
+      </ng-template>
+
+      <ng-template #end>
+        @if (authService.authUser()) {
+        <a
+          pRipple
+          class="flex items-center p-menu-item-link mb-1 ml-1 text-red-400"
+          (click)="signOut()"
+          (click)="menu.toggle($event)"
+        >
+          <span class="pi pi-sign-out"></span>
+          <span class="ml-2">Sign Out</span>
+        </a>
+        }@else {
+        <a
+          pRipple
+          routerLink="login"
+          class="flex items-center p-menu-item-link mb-1 ml-1 text-green-400"
+          (click)="menu.toggle($event)"
+        >
+          <span class="pi pi-sign-in"></span>
+          <span class="ml-2">Sign In</span>
+        </a>
+        }
+      </ng-template>
     </p-menu>
     <p-button
       (click)="menu.toggle($event)"
