@@ -7,6 +7,7 @@ import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth.guard';
 import { PublicLayout } from './layout/public-layout/public-layout';
 import { guestGuard } from './guards/guest.guard';
+import { statisticsResolver } from './pages/statistics/statistics-resolver';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/statistics/statistics').then((c) => c.Statistics),
         canActivate: [authGuard],
+        resolve: { data: statisticsResolver },
       },
       {
         path: 'login',
