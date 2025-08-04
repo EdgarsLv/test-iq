@@ -1,3 +1,11 @@
 <div class="section">
-  <p>statistics works!</p>
+  <div class="card relative h-svh-adjusted">
+    <canvas
+      baseChart
+      [data]="scatterData()"
+      [options]="scatterChartOptions"
+      [type]="'scatter'"
+    >
+    </canvas>
+  </div>
 </div>

@@ -14,6 +14,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { AuthService } from './services/auth.service';
@@ -82,6 +83,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withViewTransitions(), withComponentInputBinding()),
+    provideCharts(withDefaultRegisterables()),
     provideAnimationsAsync(),
     provideAuthInitializer(),
     providePrimeNG({
