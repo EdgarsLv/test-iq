@@ -73,6 +73,7 @@ export class Profile {
 
       this.profileForm.reset();
       this.formSubmitted = false;
+      this.authService.profile.set({ age, gender: sex });
       this.router.navigate(['/test']);
     }
   }

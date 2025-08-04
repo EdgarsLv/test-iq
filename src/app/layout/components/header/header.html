@@ -72,7 +72,7 @@
         >
           <span class="pi pi-user-edit"></span>
           <span class="ml-3">Profile</span>
-          @if (authService.authUser()) {
+          @if (!isAuthenticated()) {
           <span class="ml-auto text-muted-color">
             <i class="pi pi-lock"></i>
           </span>
@@ -89,7 +89,7 @@
         >
           <span [class]="item.icon"></span>
           <span class="ml-3">{{ item.label }}</span>
-          @if (authService.authUser()) {
+          @if (!isAuthenticatedWithProfile()) {
           <span class="ml-auto text-muted-color">
             <i class="pi pi-lock"></i>
           </span>
@@ -110,10 +110,11 @@
           <span class="ml-3">Sign Out</span>
         </a>
         }@else {
+        <div class="border-t border-slate-500 my-2"></div>
         <a
           pRipple
           routerLink="login"
-          class="flex items-center p-menu-item-link text-green-400 p-3 hover:bg-emphasis cursor-pointer"
+          class="flex items-center text-green-400 p-3 cursor-pointer"
           (click)="close()"
         >
           <span class="pi pi-sign-in"></span>

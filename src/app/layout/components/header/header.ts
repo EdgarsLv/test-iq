@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, computed, inject, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '../../service/layout.service';
@@ -14,7 +14,6 @@ import { PopoverModule } from 'primeng/popover';
     RouterModule,
     CommonModule,
     PopoverModule,
-
     StyleClassModule,
     ButtonModule,
   ],
@@ -26,11 +25,18 @@ export class Header {
   public layoutService = inject(LayoutService);
   private router = inject(Router);
 
+  public isAuthenticated = computed<boolean>(
+    () => !!this.authService.authUser()
+  );
+  public isAuthenticatedWithProfile = computed<boolean>(
+    () => !!this.authService.authUser() && !!this.authService.profile()
+  );
+
   @ViewChild('op') op!: Popover;
 
   items: any[] = [];
 
-  toggle(event: any) {
+  public toggle(event: any) {
     this.op.toggle(event);
   }
 
@@ -38,7 +44,7 @@ export class Header {
     this.op.hide();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.items = [
       {
         label: 'Start Test',
