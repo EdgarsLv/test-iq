@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
-import { Profile } from './pages/profile/profile';
-import { Test } from './pages/test/test';
-import { Results } from './pages/results/results';
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth.guard';
-import { PublicLayout } from './layout/public-layout/public-layout';
 import { guestGuard } from './guards/guest.guard';
 import { statisticsResolver } from './pages/statistics/statistics-resolver';
 
@@ -50,19 +46,4 @@ export const routes: Routes = [
       },
     ],
   },
-
-  // {
-  //   path: '',
-  //   component: PublicLayout,
-  //   children: [
-  //     {
-  //       path: 'login',
-  //       component: Home,
-  //     },
-  //     {
-  //       path: '**',
-  //       component: Home,
-  //     },
-  //   ],
-  // },
 ];
