@@ -1,0 +1,7 @@
+<div class="section">
+  <div class="card flex flex-col text-center">
+    <h3>Score: {{ result()?.score }}</h3>
+    <h3>Time spent: {{ result()?.timeSpent }}m</h3>
+    <h3>Completion date: {{ result()?.date | date : "dd.MM.yyyy" }}</h3>
+  </div>
+</div>

@@ -37,7 +37,11 @@ export class TestResult {
   public async storeTestResult(
     result: TTestResult,
     userId: string
-  ): Promise<void> {
-    await addDoc(collection(db, `users/${userId}/testResults`), result);
+  ): Promise<string> {
+    const docRef = await addDoc(
+      collection(db, `users/${userId}/testResults`),
+      result
+    );
+    return docRef.id;
   }
 }

@@ -8,6 +8,7 @@ import {
   TTestResult,
 } from '../../services/test-result';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 type Questions = {
   id: number;
@@ -27,6 +28,7 @@ type Questions = {
 export class Test {
   public authService = inject(AuthService);
   public testResultService = inject(TestResultService);
+  public router = inject(Router);
 
   public questions = signal<Questions[]>(questions);
   public currentQuestion = signal<number>(0);
@@ -159,7 +161,9 @@ export class Test {
   }
 
   private async saveTestResult(result: TTestResult): Promise<void> {
-    await this.testResultService.storeTestResult(result, this.user()!.uid);
+    await this.testResultService
+      .storeTestResult(result, this.user()!.uid)
+      .then((resultId) => this.router.navigate(['/result', resultId]));
   }
 
   public nextQuestion = () => {

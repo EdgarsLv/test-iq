@@ -4,6 +4,7 @@ import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 import { statisticsResolver } from './pages/statistics/statistics-resolver';
+import { resultResolver } from './pages/result/result-resolver';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,13 @@ export const routes: Routes = [
       {
         path: 'test',
         loadComponent: () => import('./pages/test/test').then((c) => c.Test),
+        canActivate: [authGuard],
+      },
+      {
+        path: 'result/:id',
+        loadComponent: () =>
+          import('./pages/result/result').then((c) => c.Result),
+        resolve: { result: resultResolver },
         canActivate: [authGuard],
       },
       {
