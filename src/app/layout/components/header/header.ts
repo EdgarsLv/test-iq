@@ -1,8 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  computed,
+  Inject,
+  inject,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { StyleClassModule } from 'primeng/styleclass';
-import { LayoutService } from '../../service/layout.service';
 import { AuthService } from '../../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { Popover } from 'primeng/popover';
@@ -22,7 +28,6 @@ import { PopoverModule } from 'primeng/popover';
 })
 export class Header {
   public authService = inject(AuthService);
-  public layoutService = inject(LayoutService);
   private router = inject(Router);
 
   public isAuthenticated = computed<boolean>(
@@ -35,6 +40,21 @@ export class Header {
   @ViewChild('op') op!: Popover;
 
   items: any[] = [];
+
+  private isBrowser: boolean;
+  private isDark = true;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    if (this.isBrowser) {
+      this.isDark = window.localStorage.getItem('theme') === 'app-dark';
+      if (this.isDark) {
+        document.documentElement.classList.add('app-dark');
+        window.localStorage.setItem('theme', 'app-dark');
+      }
+    }
+  }
 
   public toggle(event: any) {
     this.op.toggle(event);
@@ -65,10 +85,14 @@ export class Header {
   }
 
   toggleDarkMode() {
-    this.layoutService.layoutConfig.update((state) => ({
-      ...state,
-      darkTheme: !state.darkTheme,
-    }));
+    this.isDark = !this.isDark;
+    if (this.isDark) {
+      document.documentElement.classList.add('app-dark');
+      window.localStorage.setItem('theme', 'app-dark');
+    } else {
+      document.documentElement.classList.remove('app-dark');
+      window.localStorage.removeItem('theme');
+    }
   }
 
   public signOut(): void {

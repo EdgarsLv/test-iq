@@ -18,6 +18,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { AuthService } from './services/auth.service';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -98,6 +99,6 @@ export const appConfig: ApplicationConfig = {
           },
         },
       },
-    }),
+    }), provideClientHydration(withEventReplay()),
   ],
 };
