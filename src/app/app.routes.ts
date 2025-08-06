@@ -28,7 +28,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/result/result').then((c) => c.Result),
         resolve: { result: resultResolver },
-        canActivate: [authGuard],
       },
       {
         path: 'results',
@@ -40,8 +39,8 @@ export const routes: Routes = [
         path: 'statistics',
         loadComponent: () =>
           import('./pages/statistics/statistics').then((c) => c.Statistics),
-        canActivate: [authGuard],
         resolve: { data: statisticsResolver },
+        canActivate: [authGuard],
       },
       {
         path: 'login',

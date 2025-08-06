@@ -18,7 +18,10 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { AuthService } from './services/auth.service';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -75,7 +78,7 @@ const MyPreset = definePreset(Aura, {
 export function provideAuthInitializer() {
   return provideEnvironmentInitializer(() => {
     const authService = inject(AuthService);
-    authService.initAuth();
+    return authService.initAuth();
   });
 }
 
@@ -99,6 +102,7 @@ export const appConfig: ApplicationConfig = {
           },
         },
       },
-    }), provideClientHydration(withEventReplay()),
+    }),
+    provideClientHydration(withEventReplay()),
   ],
 };

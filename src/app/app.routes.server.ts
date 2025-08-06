@@ -3,7 +3,11 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   {
     path: 'profile',
-    renderMode: RenderMode.Server,
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'test',
+    renderMode: RenderMode.Client,
   },
   {
     path: 'result/:id',
@@ -11,7 +15,11 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'results',
-    renderMode: RenderMode.Server,
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'statistics',
+    renderMode: RenderMode.Client,
   },
   {
     path: '**',
