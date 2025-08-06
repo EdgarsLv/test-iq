@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type TResult = {
   date: string;
@@ -26,18 +26,20 @@ export class Result implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     // Set dynamic meta tags
-    this.title.setTitle(`IQ Test Result #${id}`);
+    this.title.setTitle('IQ Test Result');
     this.meta.updateTag({
       name: 'description',
       content: `Check out my IQ test result!`,
     });
     this.meta.updateTag({
       property: 'og:title',
-      content: `IQ Test Result #${id}`,
+      content: 'IQ Test Result',
     });
     this.meta.updateTag({
       property: 'og:description',
-      content: `See how I scored on the IQ test.`,
+      content: `See how I scored on the IQ test! Score: ${
+        this.result()!.score
+      }`,
     });
     this.meta.updateTag({
       property: 'og:image',

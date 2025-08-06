@@ -161,9 +161,14 @@ export class Test {
   }
 
   private async saveTestResult(result: TTestResult): Promise<void> {
-    await this.testResultService
-      .storeTestResult(result, this.user()!.uid)
-      .then((resultId) => this.router.navigate(['/result', resultId]));
+    const resultId = await this.testResultService.storeTestResult(
+      result,
+      this.user()!.uid
+    );
+
+    setTimeout(() => {
+      this.router.navigate(['/result', resultId]);
+    }, 3000);
   }
 
   public nextQuestion = () => {

@@ -26,7 +26,7 @@ exports.createNewUserDocument = functions.auth.user().onCreate(async (user) => {
 exports.onTestCompleted = functions.firestore
   .document('users/{userId}/testResults/{testId}')
   .onCreate(async (snapshot, context) => {
-    const { userId } = context.params;
+    const { userId, testId } = context.params;
     const testResultData = snapshot.data();
 
     const userRef = db.doc(`users/${userId}`);
@@ -37,11 +37,13 @@ exports.onTestCompleted = functions.firestore
     const userData = userSnap.data();
 
     const statData = {
+      timeSpent: testResultData.timeSpent,
       score: testResultData.score,
+      date: testResultData.date,
       age: userData?.age,
       gender: userData?.gender,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
-    await db.collection('statistics').add(statData);
+    await db.collection('statistics').doc(testId).set(statData);
   });
