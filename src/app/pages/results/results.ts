@@ -1,4 +1,11 @@
-import { Component, computed, inject, resource, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  resource,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatsWidget } from '../../components/stats-widget/stats-widget';
 import { AvatarModule } from 'primeng/avatar';
@@ -10,6 +17,8 @@ import {
   TTestResult,
 } from '../../services/test-result';
 import { AuthService } from '../../services/auth.service';
+import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 type TestStats = {
   average: number;
@@ -26,6 +35,7 @@ type TestStats = {
   imports: [
     CommonModule,
     StatsWidget,
+    ButtonModule,
     ProgressBarModule,
     AvatarModule,
     TagModule,
@@ -34,13 +44,16 @@ type TestStats = {
   templateUrl: './results.html',
   styleUrl: './results.scss',
 })
-export class Results {
+export class Results implements OnInit {
   public testResultService = inject(TestResultService);
   public authService = inject(AuthService);
+  public router = inject(Router);
 
   public stats = computed<TestStats>(() => this.getStats());
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
+
+  public resultId = signal<string | null>(null);
 
   public user = this.authService.authUser;
 
@@ -49,6 +62,15 @@ export class Results {
     loader: ({ params }) =>
       this.testResultService.getTestResultsByUserId(params),
   });
+
+  public ngOnInit(): void {
+    const resultId = window.localStorage.getItem('testResultId');
+    this.resultId.set(resultId);
+  }
+
+  public goToShareScreen(): void {
+    this.router.navigate(['/result', this.resultId()]);
+  }
 
   public timeInMinutes(result: TTestResult): number {
     return Math.round(result.timeSpent / 60);

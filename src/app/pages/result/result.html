@@ -1,4 +1,12 @@
 <div class="section h-svh-adjusted flex justify-center items-center">
+  <p-button
+    label="Share Result"
+    [raised]="true"
+    icon="pi pi-share-alt"
+    class="absolute top-[25%] md:top-[20%] xl:top-[15%]"
+    (click)="share()"
+  />
+
   <div class="fancy flex flex-col text-center sm:p-10! xl:p-20!">
     <h3>Score: {{ result()?.score }}</h3>
     <h3>Time spent: {{ result()?.timeSpent }}m</h3>

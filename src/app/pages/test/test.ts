@@ -166,9 +166,8 @@ export class Test {
       this.user()!.uid
     );
 
-    setTimeout(() => {
-      this.router.navigate(['/result', resultId]);
-    }, 5000);
+    window.localStorage.setItem('testResultId', resultId);
+    this.router.navigate(['/results']);
   }
 
   public nextQuestion = () => {

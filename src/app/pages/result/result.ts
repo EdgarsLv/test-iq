@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 type TResult = {
   date: string;
@@ -11,7 +12,7 @@ type TResult = {
 
 @Component({
   selector: 'app-result',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
   templateUrl: './result.html',
   styleUrl: './result.scss',
 })
@@ -38,9 +39,7 @@ export class Result implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:description',
-      content: `See how I scored on the IQ test! Score: ${
-        this.result()!.score
-      }`,
+      content: `I scored ${this.result()!.score} on the IQ test.`,
     });
     this.meta.updateTag({
       property: 'og:image',
@@ -48,7 +47,25 @@ export class Result implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:url',
-      content: `https://your-site.com/result/${id}`,
+      content: `https://test-iq--iq-test-a907f.europe-west4.hosted.app/result/${id}`,
     });
+  }
+
+  share() {
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'My IQ Test Result',
+          text: 'Check out my score!',
+          url: shareUrl,
+        })
+        .catch((err) => console.error('Sharing failed', err));
+    } else {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Link copied to clipboard!');
+      });
+    }
   }
 }
