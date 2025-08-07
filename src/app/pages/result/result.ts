@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 type TResult = {
   date: string;
@@ -17,6 +17,7 @@ type TResult = {
 })
 export class Result implements OnInit {
   public result = input<TResult>();
+  public image = input<string>('');
 
   private meta = inject(Meta);
   private title = inject(Title);
@@ -43,7 +44,7 @@ export class Result implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:image',
-      content: `https://your-site.com/api/share-image/${id}.png`,
+      content: this.image(),
     });
     this.meta.updateTag({
       property: 'og:url',

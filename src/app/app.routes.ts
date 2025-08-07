@@ -5,6 +5,7 @@ import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 import { statisticsResolver } from './pages/statistics/statistics-resolver';
 import { resultResolver } from './pages/result/result-resolver';
+import { imageResolver } from './pages/result/image-resolver';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
         path: 'result/:id',
         loadComponent: () =>
           import('./pages/result/result').then((c) => c.Result),
-        resolve: { result: resultResolver },
+        resolve: { result: resultResolver, image: imageResolver },
       },
       {
         path: 'results',

@@ -168,7 +168,7 @@ export class Test {
 
     setTimeout(() => {
       this.router.navigate(['/result', resultId]);
-    }, 3000);
+    }, 5000);
   }
 
   public nextQuestion = () => {

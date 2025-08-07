@@ -1,6 +1,7 @@
 import { setGlobalOptions } from 'firebase-functions';
 import * as functions from 'firebase-functions/v1';
 import * as admin from 'firebase-admin';
+import { generateOgImage } from './utils/generateOgImage';
 
 setGlobalOptions({ maxInstances: 10 });
 
@@ -46,4 +47,31 @@ exports.onTestCompleted = functions.firestore
     };
 
     await db.collection('statistics').doc(testId).set(statData);
+  });
+
+exports.createOgImage = functions
+  .runWith({ memory: '1GB', timeoutSeconds: 60 })
+  .firestore.document('statistics/{id}')
+  .onCreate(async (snapshot, context) => {
+    const resultData = snapshot.data() as any;
+    const resultId = context.params.id;
+
+    if (!resultData || !resultId) return;
+
+    // Generate image
+    const imageBuffer = await generateOgImage(resultData);
+    if (!imageBuffer || !(imageBuffer instanceof Buffer)) {
+      throw new Error('Failed to generate image buffer.');
+    }
+
+    // Upload to Firebase Storage
+    const file = admin.storage().bucket().file(`og-images/${resultId}.png`);
+
+    await file.save(imageBuffer, {
+      contentType: 'image/png',
+      public: true,
+      metadata: {
+        cacheControl: 'public, max-age=31536000',
+      },
+    });
   });
