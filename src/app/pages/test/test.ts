@@ -3,12 +3,12 @@ import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
-import {
-  TestResult as TestResultService,
-  TTestResult,
-} from '../../services/test-result';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FirebaseService } from '../../services/firebase.service';
+import { collection } from 'firebase/firestore';
+import { db } from '../../firebase.config';
+import { TTestResult } from '../results/results';
 
 type Questions = {
   id: number;
@@ -26,8 +26,8 @@ type Questions = {
   styleUrl: './test.scss',
 })
 export class Test {
+  private firebaseService = inject(FirebaseService);
   public authService = inject(AuthService);
-  public testResultService = inject(TestResultService);
   public router = inject(Router);
 
   public questions = signal<Questions[]>(questions);
@@ -41,6 +41,7 @@ export class Test {
   public startTime = signal<number>(Date.now());
   public formattedTime = signal<string>('30:00');
   public showResult = signal<boolean>(false);
+  public isLoading = signal<boolean>(false);
   public submitDisabled = computed(
     () => Object.keys(this.answers()).length - 1 < this.questions().length
   );
@@ -145,6 +146,7 @@ export class Test {
   }
 
   public handleSubmit(): void {
+    this.isLoading.set(true);
     const timeSpent = Math.round((Date.now() - this.startTime()) / 1000);
     const { iqScore } = this.calculateScore();
     this.showResult.set(true);
@@ -161,10 +163,14 @@ export class Test {
   }
 
   private saveTestResult(result: TTestResult): void {
-    this.testResultService
-      .storeTestResult(result, this.user()!.uid)
+    const userId = this.authService.authUser()!.uid;
+    const coleclectionRef = collection(db, `users/${userId}/testResults`);
+
+    this.firebaseService
+      .add(coleclectionRef, result)
       .then((resultId) => window.localStorage.setItem('testResultId', resultId))
-      .then(() => this.router.navigate(['/results']));
+      .then(() => this.router.navigate(['/results']))
+      .catch(() => this.isLoading.set(false));
   }
 
   public nextQuestion = () => {

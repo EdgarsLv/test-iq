@@ -10,10 +10,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Message } from 'primeng/message';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,8 @@ import { Router } from '@angular/router';
   styleUrl: './profile.scss',
 })
 export class Profile {
-  public authService = inject(AuthService);
+  private firebaseService = inject(FirebaseService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   public isSubmiting = signal<boolean>(false);
@@ -66,7 +68,7 @@ export class Profile {
       const sex = this.profileForm.controls['gender'].value;
 
       const userRef = doc(db, 'users', userId);
-      await updateDoc(userRef, {
+      await this.firebaseService.update(userRef, {
         age: age,
         gender: sex,
       });

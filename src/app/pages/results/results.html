@@ -59,14 +59,13 @@
     <h4>Score Timeline</h4>
 
     <p-table
-      [value]="results.value() || []"
+      [value]="results() || []"
       [paginator]="true"
       [rows]="5"
       [alwaysShowPaginator]="false"
     >
       <ng-template #header>
         <tr>
-          <th>#</th>
           <th>Date</th>
           <th>Score</th>
           <th>Time</th>
@@ -75,7 +74,6 @@
       </ng-template>
       <ng-template #body let-item>
         <tr>
-          <td>{{ item.order }}</td>
           <td>{{ item.date | date : "dd.MM.yyyy" }}</td>
           <td>
             <p-tag
@@ -87,7 +85,7 @@
           <td>
             <p-progressbar
               [value]="progressWidth(item)"
-              [valueStyleClass]="getScoreGradient(item.iqScore)"
+              [valueStyleClass]="getScoreGradient(item.score)"
               [showValue]="false"
               [style]="{ height: '0.6rem' }"
             />

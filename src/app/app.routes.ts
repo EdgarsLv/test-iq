@@ -3,9 +3,10 @@ import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
-import { statisticsResolver } from './pages/statistics/statistics-resolver';
-import { resultResolver } from './pages/result/result-resolver';
-import { imageResolver } from './pages/result/image-resolver';
+import { statisticsResolver } from './pages/statistics/statistics.resolver';
+import { resultResolver } from './pages/result/result.resolver';
+import { imageResolver } from './pages/result/image.resolver';
+import { resultsResolver } from './pages/results/results.resolver';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,7 @@ export const routes: Routes = [
         path: 'results',
         loadComponent: () =>
           import('./pages/results/results').then((c) => c.Results),
+        resolve: { data: resultsResolver },
         canActivate: [authGuard],
       },
       {

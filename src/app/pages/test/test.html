@@ -74,7 +74,7 @@
         variant="outlined"
         severity="success"
         (click)="handleSubmit()"
-        [disabled]="submitDisabled()"
+        [disabled]="submitDisabled() || isLoading()"
       >
         Submit
       </p-button>

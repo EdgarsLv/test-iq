@@ -1,24 +1,13 @@
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  resource,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatsWidget } from '../../components/stats-widget/stats-widget';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
-import {
-  TestResult as TestResultService,
-  TTestResult,
-} from '../../services/test-result';
 import { AuthService } from '../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type TestStats = {
   average: number;
@@ -28,6 +17,14 @@ type TestStats = {
   averageTime: number;
   improvement: number;
   currentScore: number;
+};
+
+export type TTestResult = {
+  id: string;
+  score: number;
+  timeSpent: number;
+  date: string;
+  order: number;
 };
 
 @Component({
@@ -45,27 +42,26 @@ type TestStats = {
   styleUrl: './results.scss',
 })
 export class Results implements OnInit {
-  public testResultService = inject(TestResultService);
-  public authService = inject(AuthService);
-  public router = inject(Router);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   public stats = computed<TestStats>(() => this.getStats());
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
 
   public resultId = signal<string | null>(null);
+  public results = signal<TTestResult[]>([]);
 
   public user = this.authService.authUser;
-
-  public results = resource({
-    params: () => this.user()?.uid,
-    loader: ({ params }) =>
-      this.testResultService.getTestResultsByUserId(params),
-  });
 
   public ngOnInit(): void {
     const resultId = window.localStorage.getItem('testResultId');
     this.resultId.set(resultId);
+
+    this.activatedRoute.data.subscribe((data) => {
+      this.results.set(data['data'] || []);
+    });
   }
 
   public goToShareScreen(): void {
@@ -99,7 +95,7 @@ export class Results implements OnInit {
   }
 
   private getStats(): TestStats {
-    const result = this.results.value() || [];
+    const result = this.results() || [];
 
     const scores = result.map((r) => r.score);
     const avgScore = Math.round(
