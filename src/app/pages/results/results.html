@@ -6,17 +6,21 @@
     </div>
 
     <div class="flex items-center gap-4">
-      @if (resultId()) {
-      <p-button
-        label="Want to share result?"
-        severity="primary"
-        [raised]="true"
-        (onClick)="goToShareScreen()"
-      />
-      }
       <p-avatar [image]="user()?.photoURL || ''" size="xlarge" />
     </div>
   </div>
+
+  @if (resultId()) {
+  <div class="fancy flex justify-between items-center">
+    <h5 class="mb-0!">Show off your result!</h5>
+    <p-button
+      label="Preview & Share"
+      severity="primary"
+      [raised]="true"
+      (onClick)="goToShareScreen()"
+    />
+  </div>
+  }
 
   <div class="grid lg:grid-cols-6 gap-4 sm:grid-cols-3">
     <app-stats-widget

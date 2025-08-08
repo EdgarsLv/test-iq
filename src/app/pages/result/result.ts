@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -24,7 +24,9 @@ export class Result implements OnInit {
   private title = inject(Title);
   private route = inject(ActivatedRoute);
 
-  ngOnInit(): void {
+  public timeSpent = computed(() => Math.ceil(this.result()!.timeSpent / 60));
+
+  public ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
     // Set dynamic meta tags
