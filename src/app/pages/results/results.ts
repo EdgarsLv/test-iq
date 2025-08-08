@@ -8,6 +8,8 @@ import { TableModule } from 'primeng/table';
 import { AuthService } from '../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration } from 'chart.js';
 
 type TestStats = {
   average: number;
@@ -20,11 +22,9 @@ type TestStats = {
 };
 
 export type TTestResult = {
-  id: string;
   score: number;
   timeSpent: number;
   date: string;
-  order: number;
 };
 
 @Component({
@@ -37,6 +37,7 @@ export type TTestResult = {
     AvatarModule,
     TagModule,
     TableModule,
+    BaseChartDirective,
   ],
   templateUrl: './results.html',
   styleUrl: './results.scss',
@@ -55,6 +56,47 @@ export class Results implements OnInit {
 
   public user = this.authService.authUser;
 
+  public lineOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    plugins: {
+      legend: { align: 'end' },
+    },
+
+    scales: {
+      y: {
+        type: 'linear',
+        position: 'left',
+        title: {
+          display: true,
+          text: 'Score',
+        },
+        suggestedMin: 60,
+        suggestedMax: 140,
+        min: 60,
+      },
+      y1: {
+        type: 'linear',
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
+        title: {
+          display: true,
+          text: 'Time (sec)',
+        },
+      },
+    },
+  };
+
+  public lineData = computed<ChartConfiguration<'line'>['data']>(() =>
+    this.mapResultsToLineData()
+  );
+
   public ngOnInit(): void {
     const resultId = window.localStorage.getItem('testResultId');
     this.resultId.set(resultId);
@@ -62,6 +104,32 @@ export class Results implements OnInit {
     this.activatedRoute.data.subscribe((data) => {
       this.results.set(data['data'] || []);
     });
+  }
+
+  private mapResultsToLineData(): ChartConfiguration<'line'>['data'] {
+    const labels = this.results().map((r) =>
+      new Date(r.date).toLocaleDateString()
+    );
+    const score = this.results().map((r) => r.score);
+    const time = this.results().map((r) => r.timeSpent);
+
+    return {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Score',
+          data: score,
+          borderColor: 'blue',
+          yAxisID: 'y',
+        },
+        {
+          label: 'Completion Time (sec)',
+          data: time,
+          borderColor: 'green',
+          yAxisID: 'y1',
+        },
+      ],
+    };
   }
 
   public goToShareScreen(): void {
@@ -113,7 +181,7 @@ export class Results implements OnInit {
       highest: maxScore,
       lowest: minScore,
       totalTests: result.length,
-      averageTime: avgTime,
+      averageTime: Math.ceil(avgTime / 60),
       improvement:
         result.length > 1 ? scores[scores.length - 1] - scores[0] : 0,
     };

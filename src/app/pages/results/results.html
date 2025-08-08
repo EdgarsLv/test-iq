@@ -9,7 +9,8 @@
       @if (resultId()) {
       <p-button
         label="Want to share result?"
-        severity="success"
+        severity="primary"
+        [raised]="true"
         (onClick)="goToShareScreen()"
       />
       }
@@ -36,9 +37,9 @@
       icon="pi pi-chart-bar"
     />
     <app-stats-widget
-      text="Improvement"
-      [score]="stats().improvement"
-      twClass="text-green-500"
+      text="Lowest score"
+      [score]="stats().lowest"
+      twClass="text-red-500"
       icon="pi pi-chart-line"
     />
     <app-stats-widget
@@ -48,11 +49,21 @@
       icon="pi pi-calendar-times"
     />
     <app-stats-widget
-      text="Average time"
+      text="Average (min)"
       [score]="stats().averageTime"
       twClass="text-purple-500"
       icon="pi pi-stopwatch"
     />
+  </div>
+
+  <div class="fancy relative mt-8">
+    <canvas
+      baseChart
+      [data]="lineData()"
+      [options]="lineOptions"
+      [type]="'line'"
+    >
+    </canvas>
   </div>
 
   <div class="fancy mt-7">

@@ -152,11 +152,9 @@ export class Test {
     this.showResult.set(true);
 
     const result = {
-      id: '',
       score: iqScore,
       timeSpent,
       date: new Date().toISOString(),
-      order: 0,
     };
 
     this.saveTestResult(result);
