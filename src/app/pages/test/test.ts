@@ -160,14 +160,11 @@ export class Test {
     this.saveTestResult(result);
   }
 
-  private async saveTestResult(result: TTestResult): Promise<void> {
-    const resultId = await this.testResultService.storeTestResult(
-      result,
-      this.user()!.uid
-    );
-
-    window.localStorage.setItem('testResultId', resultId);
-    this.router.navigate(['/results']);
+  private saveTestResult(result: TTestResult): void {
+    this.testResultService
+      .storeTestResult(result, this.user()!.uid)
+      .then((resultId) => window.localStorage.setItem('testResultId', resultId))
+      .then(() => this.router.navigate(['/results']));
   }
 
   public nextQuestion = () => {

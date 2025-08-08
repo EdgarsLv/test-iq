@@ -49,6 +49,16 @@ export class Result implements OnInit {
       property: 'og:url',
       content: `https://test-iq--iq-test-a907f.europe-west4.hosted.app/result/${id}`,
     });
+    this.meta.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
+    this.meta.updateTag({ name: 'twitter:title', content: 'IQ Test Result' });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: `I scored ${this.result()!.score} on the IQ test.`,
+    });
+    this.meta.updateTag({ name: 'twitter:image', content: this.image() });
   }
 
   share() {
@@ -57,8 +67,6 @@ export class Result implements OnInit {
     if (navigator.share) {
       navigator
         .share({
-          title: 'My IQ Test Result',
-          text: 'Check out my score!',
           url: shareUrl,
         })
         .catch((err) => console.error('Sharing failed', err));
