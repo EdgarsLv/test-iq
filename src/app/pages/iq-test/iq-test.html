@@ -1,0 +1,30 @@
+<div class="section">
+  <div class="card">
+    <img
+      class="w-[250px] dark:invert dark:brightness-200 dark:contrast-100"
+      [src]="question().question"
+      alt="IQ Test"
+    />
+
+    <div class="flex justify-between mt-4">
+      <p-button
+        label="Previous"
+        variant="outlined"
+        severity="contrast"
+        (click)="prevQuestion()"
+        [disabled]="currentQuestion() === 0"
+      />
+
+      @if (currentQuestion() < questions().length - 1) {
+      <p-button
+        label="Next"
+        variant="outlined"
+        severity="contrast"
+        (click)="nextQuestion()"
+      />
+      }@else {
+      <p-button label="Submit" variant="outlined" severity="success" />
+      }
+    </div>
+  </div>
+</div>

@@ -74,6 +74,11 @@ export class Header {
         link: 'test',
       },
       {
+        label: 'IQ Test',
+        icon: 'pi pi-clock',
+        link: 'iq-test',
+      },
+      {
         label: 'View Results',
         icon: 'pi pi-chart-bar',
         link: 'results',

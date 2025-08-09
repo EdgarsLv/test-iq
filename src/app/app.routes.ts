@@ -26,6 +26,12 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'iq-test',
+        loadComponent: () =>
+          import('./pages/iq-test/iq-test').then((c) => c.IqTest),
+        canActivate: [authGuard],
+      },
+      {
         path: 'result/:id',
         loadComponent: () =>
           import('./pages/result/result').then((c) => c.Result),

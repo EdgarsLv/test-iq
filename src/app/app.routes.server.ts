@@ -10,6 +10,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
+    path: 'iq-test',
+    renderMode: RenderMode.Client,
+  },
+  {
     path: 'result/:id',
     renderMode: RenderMode.Server,
   },
