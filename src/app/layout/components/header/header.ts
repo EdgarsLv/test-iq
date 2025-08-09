@@ -13,6 +13,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { Popover } from 'primeng/popover';
 import { PopoverModule } from 'primeng/popover';
+import { Logo } from '../../../components/logo/logo';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ import { PopoverModule } from 'primeng/popover';
     PopoverModule,
     StyleClassModule,
     ButtonModule,
+    Logo,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
