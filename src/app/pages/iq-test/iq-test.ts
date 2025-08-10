@@ -56,7 +56,7 @@ const questions = [
   },
   {
     id: 2,
-    question: 'assets/images/questions/2.png',
+    question: `${questionUrl}2.png`,
     options: [
       `${answerUrl}21.png`,
       `${answerUrl}22.png`,
@@ -70,7 +70,7 @@ const questions = [
   },
   {
     id: 3,
-    question: 'assets/images/questions/3.png',
+    question: `${questionUrl}3.png`,
     options: [
       `${answerUrl}31.png`,
       `${answerUrl}32.png`,
@@ -84,7 +84,7 @@ const questions = [
   },
   {
     id: 4,
-    question: 'assets/images/questions/4.png',
+    question: `${questionUrl}4.png`,
     options: [
       `${answerUrl}41.png`,
       `${answerUrl}42.png`,
@@ -98,7 +98,7 @@ const questions = [
   },
   {
     id: 5,
-    question: 'assets/images/questions/5.png',
+    question: `${questionUrl}5.png`,
     options: [
       `${answerUrl}51.png`,
       `${answerUrl}52.png`,
@@ -112,7 +112,7 @@ const questions = [
   },
   {
     id: 6,
-    question: 'assets/images/questions/6.png',
+    question: `${questionUrl}6.png`,
     options: [
       `${answerUrl}61.png`,
       `${answerUrl}62.png`,
@@ -126,7 +126,7 @@ const questions = [
   },
   {
     id: 7,
-    question: 'assets/images/questions/7.png',
+    question: `${questionUrl}7.png`,
     options: [
       `${answerUrl}71.png`,
       `${answerUrl}72.png`,
@@ -140,7 +140,7 @@ const questions = [
   },
   {
     id: 8,
-    question: 'assets/images/questions/8.png',
+    question: `${questionUrl}8.png`,
     options: [
       `${answerUrl}81.png`,
       `${answerUrl}82.png`,
@@ -154,7 +154,7 @@ const questions = [
   },
   {
     id: 9,
-    question: 'assets/images/questions/9.png',
+    question: `${questionUrl}9.png`,
     options: [
       `${answerUrl}91.png`,
       `${answerUrl}92.png`,
@@ -168,7 +168,7 @@ const questions = [
   },
   {
     id: 10,
-    question: 'assets/images/questions/10.png',
+    question: `${questionUrl}10.png`,
     options: [
       `${answerUrl}101.png`,
       `${answerUrl}102.png`,
@@ -182,7 +182,7 @@ const questions = [
   },
   {
     id: 11,
-    question: 'assets/images/questions/11.png',
+    question: `${questionUrl}11.png`,
     options: [
       `${answerUrl}111.png`,
       `${answerUrl}112.png`,
@@ -196,7 +196,7 @@ const questions = [
   },
   {
     id: 12,
-    question: 'assets/images/questions/12.png',
+    question: `${questionUrl}12.png`,
     options: [
       `${answerUrl}121.png`,
       `${answerUrl}122.png`,
@@ -210,7 +210,7 @@ const questions = [
   },
   {
     id: 13,
-    question: 'assets/images/questions/13.png',
+    question: `${questionUrl}13.png`,
     options: [
       `${answerUrl}131.png`,
       `${answerUrl}132.png`,
@@ -224,7 +224,7 @@ const questions = [
   },
   {
     id: 14,
-    question: 'assets/images/questions/14.png',
+    question: `${questionUrl}14.png`,
     options: [
       `${answerUrl}141.png`,
       `${answerUrl}142.png`,
@@ -238,7 +238,7 @@ const questions = [
   },
   {
     id: 15,
-    question: 'assets/images/questions/15.png',
+    question: `${questionUrl}15.png`,
     options: [
       `${answerUrl}151.png`,
       `${answerUrl}152.png`,
@@ -252,7 +252,7 @@ const questions = [
   },
   {
     id: 16,
-    question: 'assets/images/questions/16.png',
+    question: `${questionUrl}16.png`,
     options: [
       `${answerUrl}161.png`,
       `${answerUrl}162.png`,
@@ -266,7 +266,7 @@ const questions = [
   },
   {
     id: 17,
-    question: 'assets/images/questions/17.png',
+    question: `${questionUrl}17.png`,
     options: [
       `${answerUrl}171.png`,
       `${answerUrl}172.png`,
@@ -280,7 +280,7 @@ const questions = [
   },
   {
     id: 18,
-    question: 'assets/images/questions/18.png',
+    question: `${questionUrl}18.png`,
     options: [
       `${answerUrl}181.png`,
       `${answerUrl}182.png`,
@@ -294,7 +294,7 @@ const questions = [
   },
   {
     id: 19,
-    question: 'assets/images/questions/19.png',
+    question: `${questionUrl}19.png`,
     options: [
       `${answerUrl}191.png`,
       `${answerUrl}192.png`,
@@ -308,7 +308,7 @@ const questions = [
   },
   {
     id: 20,
-    question: 'assets/images/questions/20.png',
+    question: `${questionUrl}20.png`,
     options: [
       `${answerUrl}201.png`,
       `${answerUrl}202.png`,
@@ -322,7 +322,7 @@ const questions = [
   },
   {
     id: 21,
-    question: 'assets/images/questions/21.png',
+    question: `${questionUrl}21.png`,
     options: [
       `${answerUrl}211.png`,
       `${answerUrl}212.png`,
@@ -336,7 +336,7 @@ const questions = [
   },
   {
     id: 22,
-    question: 'assets/images/questions/22.png',
+    question: `${questionUrl}22.png`,
     options: [
       `${answerUrl}221.png`,
       `${answerUrl}222.png`,
@@ -350,7 +350,7 @@ const questions = [
   },
   {
     id: 23,
-    question: 'assets/images/questions/23.png',
+    question: `${questionUrl}23.png`,
     options: [
       `${answerUrl}231.png`,
       `${answerUrl}232.png`,
@@ -364,7 +364,7 @@ const questions = [
   },
   {
     id: 24,
-    question: 'assets/images/questions/24.png',
+    question: `${questionUrl}24.png`,
     options: [
       `${answerUrl}241.png`,
       `${answerUrl}242.png`,
@@ -378,7 +378,7 @@ const questions = [
   },
   {
     id: 25,
-    question: 'assets/images/questions/25.png',
+    question: `${questionUrl}25.png`,
     options: [
       `${answerUrl}251.png`,
       `${answerUrl}252.png`,
@@ -392,7 +392,7 @@ const questions = [
   },
   {
     id: 26,
-    question: 'assets/images/questions/26.png',
+    question: `${questionUrl}26.png`,
     options: [
       `${answerUrl}261.png`,
       `${answerUrl}262.png`,
@@ -406,7 +406,7 @@ const questions = [
   },
   {
     id: 27,
-    question: 'assets/images/questions/27.png',
+    question: `${questionUrl}27.png`,
     options: [
       `${answerUrl}271.png`,
       `${answerUrl}272.png`,
@@ -420,7 +420,7 @@ const questions = [
   },
   {
     id: 28,
-    question: 'assets/images/questions/28.png',
+    question: `${questionUrl}28.png`,
     options: [
       `${answerUrl}281.png`,
       `${answerUrl}282.png`,
@@ -434,7 +434,7 @@ const questions = [
   },
   {
     id: 29,
-    question: 'assets/images/questions/29.png',
+    question: `${questionUrl}29.png`,
     options: [
       `${answerUrl}291.png`,
       `${answerUrl}292.png`,
@@ -448,7 +448,7 @@ const questions = [
   },
   {
     id: 30,
-    question: 'assets/images/questions/30.png',
+    question: `${questionUrl}30.png`,
     options: [
       `${answerUrl}301.png`,
       `${answerUrl}302.png`,
@@ -462,7 +462,7 @@ const questions = [
   },
   {
     id: 31,
-    question: 'assets/images/questions/31.png',
+    question: `${questionUrl}31.png`,
     options: [
       `${answerUrl}311.png`,
       `${answerUrl}312.png`,
@@ -476,7 +476,7 @@ const questions = [
   },
   {
     id: 32,
-    question: 'assets/images/questions/32.png',
+    question: `${questionUrl}32.png`,
     options: [
       `${answerUrl}321.png`,
       `${answerUrl}322.png`,
@@ -490,7 +490,7 @@ const questions = [
   },
   {
     id: 33,
-    question: 'assets/images/questions/33.png',
+    question: `${questionUrl}33.png`,
     options: [
       `${answerUrl}331.png`,
       `${answerUrl}332.png`,
@@ -504,7 +504,7 @@ const questions = [
   },
   {
     id: 34,
-    question: 'assets/images/questions/34.png',
+    question: `${questionUrl}34.png`,
     options: [
       `${answerUrl}341.png`,
       `${answerUrl}342.png`,
@@ -518,7 +518,7 @@ const questions = [
   },
   {
     id: 35,
-    question: 'assets/images/questions/35.png',
+    question: `${questionUrl}35.png`,
     options: [
       `${answerUrl}351.png`,
       `${answerUrl}352.png`,
