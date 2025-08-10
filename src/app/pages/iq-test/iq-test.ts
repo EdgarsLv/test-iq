@@ -1,5 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
+import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
 
 type Questions = {
   id: number;
@@ -11,17 +14,68 @@ type Questions = {
 
 @Component({
   selector: 'app-iq-test',
-  imports: [ButtonModule],
+  imports: [ButtonModule, TagModule, ProgressBarModule],
   templateUrl: './iq-test.html',
   styleUrl: './iq-test.scss',
 })
-export class IqTest {
+export class IqTest implements OnInit {
   public questions = signal<Questions[]>(questions);
   public currentQuestion = signal<number>(0);
   public question = computed<Questions>(
     () => this.questions()[this.currentQuestion()]
   );
   public questionOptions = computed(() => this.question().options);
+  public answers = signal<Record<number, number>>({ 0: 0 });
+  public progressValue = computed(() => {
+    const answered = Object.keys(this.answers()).length - 1;
+    const total = this.questions().length;
+
+    return total > 0 ? Math.round((answered / total) * 100) : 0;
+  });
+  public timeLeft = signal<number>(1800);
+  public startTime = signal<number>(Date.now());
+  public formattedTime = signal<string>('30:00');
+  public showResult = signal<boolean>(false);
+
+  private destroy$ = new Subject<void>();
+
+  ngOnInit(): void {
+    this.startCountdown();
+  }
+
+  private startCountdown(): void {
+    interval(1000)
+      .pipe(
+        takeUntil(this.destroy$),
+        takeWhile(() => this.timeLeft() > 0 && !this.showResult()),
+        tap(() => {
+          this.timeLeft.update((val) => val - 1);
+          this.formattedTime.set(this.formatTime(this.timeLeft()));
+
+          // if (this.timeLeft() === 0) {
+          //   this.handleSubmit();
+          // }
+        })
+      )
+      .subscribe();
+  }
+
+  formatTime(totalSeconds: number): string {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${this.pad(minutes)}:${this.pad(seconds)}`;
+  }
+
+  pad(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
+
+  public handleAnswer(questionId: number, answerIndex: number): void {
+    this.answers.update((prev) => ({
+      ...prev,
+      [questionId]: answerIndex,
+    }));
+  }
 
   public nextQuestion = () => {
     if (this.currentQuestion() < this.questions().length - 1) {

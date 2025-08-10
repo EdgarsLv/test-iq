@@ -1,15 +1,44 @@
 <div class="section">
-  <div class="card">
-    <div class="flex gap-4">
-      <img
-        class="w-[250px] h-[250px] dark:invert dark:brightness-200 dark:contrast-100"
-        [src]="question().question"
-        alt="IQ Test"
+  <div class="fancy">
+    <div class="flex justify-between items-center mb-2">
+      <h4 class="mb-0!">IQ Test progress</h4>
+      <div>
+        <p-tag [value]="formattedTime()" severity="secondary" />
+        <span class="text-muted-color-emphasis ml-2">
+          Question {{ currentQuestion() + 1 }} of {{ questions().length }}
+        </span>
+      </div>
+    </div>
+    <div>
+      <p-progressbar
+        [value]="progressValue()"
+        [color]="'#06981a'"
+        [showValue]="false"
+        [style]="{ height: '0.6rem' }"
       />
+    </div>
+  </div>
 
-      <div class="grid grid-cols-3 gap-2 items-center">
+  <div class="fancy">
+    <div class="flex items-center gap-8">
+      <div class="shadow-md p-2">
+        <img
+          class="w-[250px] h-[250px] dark:invert dark:brightness-200 dark:contrast-100"
+          [src]="question().question"
+          alt="IQ Test"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 items-center">
         @for (option of questionOptions(); track $index) {
-        <div>
+        <!-- SELECTED -->
+        @let selected = answers()[question().id] === $index;
+
+        <div
+          class="shadow-md p-2 cursor-pointer"
+          [class]="selected ? 'bg-indigo-100' : ''"
+          (click)="handleAnswer(question().id, $index)"
+        >
           <img
             [src]="option"
             alt="Answer option"
@@ -29,6 +58,12 @@
         [disabled]="currentQuestion() === 0"
       />
 
+      <div class="flex items-center">
+        @let value = `${ currentQuestion() + 1 } / ${ questions().length }`;
+
+        <p-tag [value]="value" />
+      </div>
+
       @if (currentQuestion() < questions().length - 1) {
       <p-button
         label="Next"
@@ -39,6 +74,43 @@
       }@else {
       <p-button label="Submit" variant="outlined" severity="success" />
       }
+    </div>
+  </div>
+
+  <div class="fancy">
+    <div><h4>Question overview</h4></div>
+
+    <div class="grid grid-cols-10 mb-4 gap-4">
+      @for (item of questions(); track $index) {
+      <button
+        class="w-10 h-10 rounded-sm cursor-pointer text-black font-semibold"
+        (click)="currentQuestion.set($index)"
+        [class]="
+          currentQuestion() === $index
+            ? 'bg-purple-500'
+            : answers()[questions()[$index].id] !== undefined
+            ? 'bg-green-500'
+            : 'dark:bg-gray-500 bg-gray-300'
+        "
+      >
+        {{ $index + 1 }}
+      </button>
+      }
+    </div>
+
+    <div class="mt-5 flex gap-4 justify-center">
+      <div class="flex">
+        <div class="w-5 h-5 bg-purple-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Current</span>
+      </div>
+      <div class="flex">
+        <div class="w-5 h-5 bg-green-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Answered</span>
+      </div>
+      <div class="flex">
+        <div class="w-5 h-5 bg-gray-300 dark:bg-gray-500 mr-3 rounded-sm"></div>
+        <span class="text-muted-color-emphasis">Unanswered</span>
+      </div>
     </div>
   </div>
 </div>
