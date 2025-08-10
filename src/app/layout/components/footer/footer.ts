@@ -7,4 +7,6 @@ import { Logo } from '../../../components/logo/logo';
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
-export class Footer {}
+export class Footer {
+  public fullYear = new Date().getFullYear();
+}
