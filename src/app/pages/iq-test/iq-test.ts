@@ -1,15 +1,27 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TagModule } from 'primeng/tag';
 import { interval, Subject, takeUntil, takeWhile, tap } from 'rxjs';
+import { FirebaseService } from '../../services/firebase.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { collection } from 'firebase/firestore';
+import { db } from '../../firebase.config';
 
 type Questions = {
   id: number;
   question: string;
   options: string[];
   correct: number;
+  value: number;
   difficulty: string;
+};
+
+type TestResult = {
+  score: number;
+  timeSpent: number;
+  date: string;
 };
 
 @Component({
@@ -19,6 +31,10 @@ type Questions = {
   styleUrl: './iq-test.scss',
 })
 export class IqTest implements OnInit {
+  private firebaseService = inject(FirebaseService);
+  public authService = inject(AuthService);
+  public router = inject(Router);
+
   public questions = signal<Questions[]>(questions);
   public currentQuestion = signal<number>(0);
   public question = computed<Questions>(
@@ -32,15 +48,59 @@ export class IqTest implements OnInit {
 
     return total > 0 ? Math.round((answered / total) * 100) : 0;
   });
-  public timeLeft = signal<number>(1800);
+  public timeLeft = signal<number>(1500);
   public startTime = signal<number>(Date.now());
-  public formattedTime = signal<string>('30:00');
+  public formattedTime = signal<string>('25:00');
   public showResult = signal<boolean>(false);
+  public isLoading = signal<boolean>(false);
+  public submitDisabled = computed(
+    () => Object.keys(this.answers()).length - 1 < this.questions().length
+  );
 
   private destroy$ = new Subject<void>();
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.startCountdown();
+  }
+
+  public handleSubmit(): void {
+    this.isLoading.set(true);
+    const timeSpent = Math.round((Date.now() - this.startTime()) / 1000);
+    const score = this.calculateScore();
+    this.showResult.set(true);
+
+    const result = {
+      score,
+      timeSpent,
+      date: new Date().toISOString(),
+    };
+
+    this.saveTestResult(result);
+  }
+
+  private saveTestResult(result: TestResult): void {
+    const userId = this.authService.authUser()!.uid;
+    const coleclectionRef = collection(db, `users/${userId}/testResults`);
+
+    this.firebaseService
+      .add(coleclectionRef, result)
+      .then((resultId) => window.localStorage.setItem('testResultId', resultId))
+      .then(() => this.router.navigate(['/results']))
+      .catch(() => this.isLoading.set(false));
+  }
+
+  private calculateScore(): number {
+    let total = 0;
+
+    this.questions().forEach((question) => {
+      const picked = this.answers()[question.id];
+
+      if (picked + 1 === question.correct) {
+        total += question.value;
+      }
+    });
+
+    return total + 70;
   }
 
   private startCountdown(): void {
@@ -52,21 +112,21 @@ export class IqTest implements OnInit {
           this.timeLeft.update((val) => val - 1);
           this.formattedTime.set(this.formatTime(this.timeLeft()));
 
-          // if (this.timeLeft() === 0) {
-          //   this.handleSubmit();
-          // }
+          if (this.timeLeft() === 0) {
+            this.handleSubmit();
+          }
         })
       )
       .subscribe();
   }
 
-  formatTime(totalSeconds: number): string {
+  private formatTime(totalSeconds: number): string {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${this.pad(minutes)}:${this.pad(seconds)}`;
   }
 
-  pad(value: number): string {
+  private pad(value: number): string {
     return value < 10 ? '0' + value : value.toString();
   }
 
@@ -88,12 +148,17 @@ export class IqTest implements OnInit {
       this.currentQuestion.set(this.currentQuestion() - 1);
     }
   };
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
 
 const questionUrl = 'assets/images/questions/';
 const answerUrl = 'assets/images/answers/';
 
-const questions = [
+const questions: Questions[] = [
   {
     id: 1,
     question: `${questionUrl}1.png`,
@@ -106,6 +171,7 @@ const questions = [
       `${answerUrl}16.png`,
     ],
     correct: 1,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -119,7 +185,8 @@ const questions = [
       `${answerUrl}25.png`,
       `${answerUrl}26.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -133,7 +200,8 @@ const questions = [
       `${answerUrl}35.png`,
       `${answerUrl}36.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -147,7 +215,8 @@ const questions = [
       `${answerUrl}45.png`,
       `${answerUrl}46.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -161,7 +230,8 @@ const questions = [
       `${answerUrl}55.png`,
       `${answerUrl}56.png`,
     ],
-    correct: 1,
+    correct: 4,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -175,7 +245,8 @@ const questions = [
       `${answerUrl}65.png`,
       `${answerUrl}66.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -189,7 +260,8 @@ const questions = [
       `${answerUrl}75.png`,
       `${answerUrl}76.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -203,7 +275,8 @@ const questions = [
       `${answerUrl}85.png`,
       `${answerUrl}86.png`,
     ],
-    correct: 1,
+    correct: 3,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -217,7 +290,8 @@ const questions = [
       `${answerUrl}95.png`,
       `${answerUrl}96.png`,
     ],
-    correct: 1,
+    correct: 4,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -231,7 +305,8 @@ const questions = [
       `${answerUrl}105.png`,
       `${answerUrl}106.png`,
     ],
-    correct: 1,
+    correct: 4,
+    value: 1,
     difficulty: 'easy',
   },
   {
@@ -246,6 +321,7 @@ const questions = [
       `${answerUrl}116.png`,
     ],
     correct: 1,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -260,6 +336,7 @@ const questions = [
       `${answerUrl}126.png`,
     ],
     correct: 1,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -273,7 +350,8 @@ const questions = [
       `${answerUrl}135.png`,
       `${answerUrl}136.png`,
     ],
-    correct: 1,
+    correct: 2,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -288,6 +366,7 @@ const questions = [
       `${answerUrl}146.png`,
     ],
     correct: 1,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -301,7 +380,8 @@ const questions = [
       `${answerUrl}155.png`,
       `${answerUrl}156.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -315,7 +395,8 @@ const questions = [
       `${answerUrl}165.png`,
       `${answerUrl}166.png`,
     ],
-    correct: 1,
+    correct: 2,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -329,7 +410,8 @@ const questions = [
       `${answerUrl}175.png`,
       `${answerUrl}176.png`,
     ],
-    correct: 1,
+    correct: 4,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -343,7 +425,8 @@ const questions = [
       `${answerUrl}185.png`,
       `${answerUrl}186.png`,
     ],
-    correct: 1,
+    correct: 3,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -358,6 +441,7 @@ const questions = [
       `${answerUrl}196.png`,
     ],
     correct: 1,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -372,6 +456,7 @@ const questions = [
       `${answerUrl}206.png`,
     ],
     correct: 1,
+    value: 2,
     difficulty: 'easy',
   },
   {
@@ -385,7 +470,8 @@ const questions = [
       `${answerUrl}215.png`,
       `${answerUrl}216.png`,
     ],
-    correct: 1,
+    correct: 2,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -399,7 +485,8 @@ const questions = [
       `${answerUrl}225.png`,
       `${answerUrl}226.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -413,7 +500,8 @@ const questions = [
       `${answerUrl}235.png`,
       `${answerUrl}236.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -427,7 +515,8 @@ const questions = [
       `${answerUrl}245.png`,
       `${answerUrl}246.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -441,7 +530,8 @@ const questions = [
       `${answerUrl}255.png`,
       `${answerUrl}256.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -455,7 +545,8 @@ const questions = [
       `${answerUrl}265.png`,
       `${answerUrl}266.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -470,6 +561,7 @@ const questions = [
       `${answerUrl}276.png`,
     ],
     correct: 1,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -484,6 +576,7 @@ const questions = [
       `${answerUrl}286.png`,
     ],
     correct: 1,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -497,7 +590,8 @@ const questions = [
       `${answerUrl}295.png`,
       `${answerUrl}296.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -511,7 +605,8 @@ const questions = [
       `${answerUrl}305.png`,
       `${answerUrl}306.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 3,
     difficulty: 'easy',
   },
   {
@@ -525,7 +620,8 @@ const questions = [
       `${answerUrl}315.png`,
       `${answerUrl}316.png`,
     ],
-    correct: 1,
+    correct: 5,
+    value: 4,
     difficulty: 'easy',
   },
   {
@@ -540,6 +636,7 @@ const questions = [
       `${answerUrl}326.png`,
     ],
     correct: 1,
+    value: 4,
     difficulty: 'easy',
   },
   {
@@ -553,7 +650,8 @@ const questions = [
       `${answerUrl}335.png`,
       `${answerUrl}336.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 4,
     difficulty: 'easy',
   },
   {
@@ -567,7 +665,8 @@ const questions = [
       `${answerUrl}345.png`,
       `${answerUrl}346.png`,
     ],
-    correct: 1,
+    correct: 6,
+    value: 4,
     difficulty: 'easy',
   },
   {
@@ -581,7 +680,8 @@ const questions = [
       `${answerUrl}355.png`,
       `${answerUrl}356.png`,
     ],
-    correct: 1,
+    correct: 4,
+    value: 4,
     difficulty: 'easy',
   },
 ];
