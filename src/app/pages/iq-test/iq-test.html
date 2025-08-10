@@ -1,10 +1,24 @@
 <div class="section">
   <div class="card">
-    <img
-      class="w-[250px] dark:invert dark:brightness-200 dark:contrast-100"
-      [src]="question().question"
-      alt="IQ Test"
-    />
+    <div class="flex gap-4">
+      <img
+        class="w-[250px] h-[250px] dark:invert dark:brightness-200 dark:contrast-100"
+        [src]="question().question"
+        alt="IQ Test"
+      />
+
+      <div class="grid grid-cols-3 gap-2 items-center">
+        @for (option of questionOptions(); track $index) {
+        <div>
+          <img
+            [src]="option"
+            alt="Answer option"
+            class="w-[80px] h-[80px] dark:invert dark:brightness-200 dark:contrast-100"
+          />
+        </div>
+        }
+      </div>
+    </div>
 
     <div class="flex justify-between mt-4">
       <p-button

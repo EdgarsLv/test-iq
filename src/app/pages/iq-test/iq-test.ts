@@ -21,6 +21,7 @@ export class IqTest {
   public question = computed<Questions>(
     () => this.questions()[this.currentQuestion()]
   );
+  public questionOptions = computed(() => this.question().options);
 
   public nextQuestion = () => {
     if (this.currentQuestion() < this.questions().length - 1) {
@@ -35,67 +36,133 @@ export class IqTest {
   };
 }
 
+const questionUrl = 'assets/images/questions/';
+const answerUrl = 'assets/images/answers/';
+
 const questions = [
   {
     id: 1,
-    question: 'assets/images/questions/1.png',
-    options: ['24', '32', '30', '28'],
+    question: `${questionUrl}1.png`,
+    options: [
+      `${answerUrl}11.png`,
+      `${answerUrl}12.png`,
+      `${answerUrl}13.png`,
+      `${answerUrl}14.png`,
+      `${answerUrl}15.png`,
+      `${answerUrl}16.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 2,
     question: 'assets/images/questions/2.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}21.png`,
+      `${answerUrl}22.png`,
+      `${answerUrl}23.png`,
+      `${answerUrl}24.png`,
+      `${answerUrl}25.png`,
+      `${answerUrl}26.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 3,
     question: 'assets/images/questions/3.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}31.png`,
+      `${answerUrl}32.png`,
+      `${answerUrl}33.png`,
+      `${answerUrl}34.png`,
+      `${answerUrl}35.png`,
+      `${answerUrl}36.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 4,
     question: 'assets/images/questions/4.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}41.png`,
+      `${answerUrl}42.png`,
+      `${answerUrl}43.png`,
+      `${answerUrl}44.png`,
+      `${answerUrl}45.png`,
+      `${answerUrl}46.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 5,
     question: 'assets/images/questions/5.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}51.png`,
+      `${answerUrl}52.png`,
+      `${answerUrl}53.png`,
+      `${answerUrl}54.png`,
+      `${answerUrl}55.png`,
+      `${answerUrl}56.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 6,
     question: 'assets/images/questions/6.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}61.png`,
+      `${answerUrl}62.png`,
+      `${answerUrl}63.png`,
+      `${answerUrl}64.png`,
+      `${answerUrl}65.png`,
+      `${answerUrl}66.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 7,
     question: 'assets/images/questions/7.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}71.png`,
+      `${answerUrl}72.png`,
+      `${answerUrl}73.png`,
+      `${answerUrl}74.png`,
+      `${answerUrl}75.png`,
+      `${answerUrl}76.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 8,
     question: 'assets/images/questions/8.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}81.png`,
+      `${answerUrl}82.png`,
+      `${answerUrl}83.png`,
+      `${answerUrl}84.png`,
+      `${answerUrl}85.png`,
+      `${answerUrl}86.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
   {
     id: 9,
     question: 'assets/images/questions/9.png',
-    options: ['24', '32', '30', '28'],
+    options: [
+      `${answerUrl}91.png`,
+      `${answerUrl}92.png`,
+      `${answerUrl}93.png`,
+      `${answerUrl}94.png`,
+      `${answerUrl}95.png`,
+      `${answerUrl}96.png`,
+    ],
     correct: 1,
     difficulty: 'easy',
   },
