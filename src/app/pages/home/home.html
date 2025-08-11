@@ -1,6 +1,6 @@
 <div class="section">
   <div class="fancy text-center">
-    <h1>IQ Test pro</h1>
+    <h1>SisiQuiz - IQ Test</h1>
     <h3 class="text-muted-color-emphasis! text-balance my-0!">
       Discover your intellectual potential with our comprehensive IQ assessment
     </h3>
@@ -38,19 +38,19 @@
       icon="pi pi-user-edit"
       label="SET UP PROFILE"
       (onClick)="setProfile()"
-    ></p-button>
+    />
     <p-button
       icon="pi pi-clock"
       label="START IQ TEST"
       severity="contrast"
       (onClick)="startTest()"
-    ></p-button>
+    />
     <p-button
       icon="pi pi-chart-bar"
       label="VIEW RESULTS"
       severity="info"
       (onClick)="viewResult()"
-    ></p-button>
+    />
   </div>
   }@else {
   <div class="flex justify-center mb-8">
@@ -59,11 +59,11 @@
       severity="contrast"
       label="Sign in with Google"
       (onClick)="loginWithGoogle()"
-    ></p-button>
+    />
   </div>
 
   <div class="text-center text-muted-color-emphasis font-medium">
-    <span class="block mb-1">No payment required.</span>
+    <p>No payment required.</p>
     <p class="text-balance">
       Your test results will be available instantly after completing the test!
     </p>

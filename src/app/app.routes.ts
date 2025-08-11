@@ -7,6 +7,7 @@ import { statisticsResolver } from './pages/statistics/statistics.resolver';
 import { resultResolver } from './pages/result/result.resolver';
 import { imageResolver } from './pages/result/image.resolver';
 import { resultsResolver } from './pages/results/results.resolver';
+import { profileGuard } from './guards/profile.guard';
 
 export const routes: Routes = [
   {
@@ -23,13 +24,13 @@ export const routes: Routes = [
       {
         path: 'test',
         loadComponent: () => import('./pages/test/test').then((c) => c.Test),
-        canActivate: [authGuard],
+        canActivate: [authGuard, profileGuard],
       },
       {
         path: 'iq-test',
         loadComponent: () =>
           import('./pages/iq-test/iq-test').then((c) => c.IqTest),
-        canActivate: [authGuard],
+        canActivate: [authGuard, profileGuard],
       },
       {
         path: 'result/:id',
@@ -42,14 +43,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/results/results').then((c) => c.Results),
         resolve: { data: resultsResolver },
-        canActivate: [authGuard],
+        canActivate: [authGuard, profileGuard],
       },
       {
         path: 'statistics',
         loadComponent: () =>
           import('./pages/statistics/statistics').then((c) => c.Statistics),
         resolve: { data: statisticsResolver },
-        canActivate: [authGuard],
+        canActivate: [authGuard, profileGuard],
       },
       {
         path: 'login',

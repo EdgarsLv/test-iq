@@ -68,13 +68,13 @@ export class Header {
 
   public ngOnInit() {
     this.items = [
+      // {
+      //   label: 'IQ Test',
+      //   icon: 'pi pi-clock',
+      //   link: 'test',
+      // },
       {
         label: 'Start Test',
-        icon: 'pi pi-clock',
-        link: 'test',
-      },
-      {
-        label: 'IQ Test',
         icon: 'pi pi-clock',
         link: 'iq-test',
       },
