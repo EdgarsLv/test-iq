@@ -11,7 +11,7 @@ import { getStorage } from 'firebase/storage';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyBG3NcyGVmo_sIc4_-JBSB4YXSQOQqKkac',
-  authDomain: 'iq-test-a907f.firebaseapp.com',
+  authDomain: 'sisiquiz.com',
   projectId: 'iq-test-a907f',
   storageBucket: 'iq-test-a907f.firebasestorage.app',
   messagingSenderId: '997848554751',

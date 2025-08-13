@@ -49,7 +49,7 @@ export class Result implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:url',
-      content: `https://test.pucens.com/result/${id}`,
+      content: `https://sisiquiz.com/result/${id}`,
     });
     this.meta.updateTag({
       name: 'twitter:card',

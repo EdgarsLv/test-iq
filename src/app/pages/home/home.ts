@@ -20,7 +20,7 @@ export class Home {
   }
 
   public startTest(): void {
-    this.router.navigate(['test']);
+    this.router.navigate(['iq-test']);
   }
 
   public viewResult(): void {

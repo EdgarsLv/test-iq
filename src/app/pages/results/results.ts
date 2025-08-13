@@ -4,7 +4,6 @@ import { StatsWidget } from '../../components/stats-widget/stats-widget';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { TableModule } from 'primeng/table';
 import { AuthService } from '../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +35,6 @@ export type TTestResult = {
     ProgressBarModule,
     AvatarModule,
     TagModule,
-    TableModule,
     BaseChartDirective,
   ],
   templateUrl: './results.html',
@@ -76,7 +74,7 @@ export class Results implements OnInit {
           text: 'Score',
         },
         suggestedMin: 60,
-        suggestedMax: 140,
+        suggestedMax: 150,
         min: 60,
       },
       y1: {
