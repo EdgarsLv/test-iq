@@ -44,7 +44,7 @@ export class Header {
   items: any[] = [];
 
   private isBrowser: boolean;
-  private isDark = true;
+  public isDark = true;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);

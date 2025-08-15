@@ -47,7 +47,7 @@
   inset: 0;
   border-radius: inherit;
   border: var(--border-width) solid transparent;
-  background: linear-gradient(var(--surface-border), var(--fancy-border))
+  background: linear-gradient(var(--fancy-border-top), var(--fancy-border))
     border-box;
   mask: linear-gradient(black, black) border-box,
     linear-gradient(black, black) padding-box;
