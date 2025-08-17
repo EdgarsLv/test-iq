@@ -1,5 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -23,11 +31,28 @@ export class Result implements OnInit {
   private meta = inject(Meta);
   private title = inject(Title);
   private route = inject(ActivatedRoute);
+  private platformId = inject(PLATFORM_ID);
 
   public timeSpent = computed(() => Math.ceil(this.result()!.timeSpent / 60));
 
+  public resultId = signal<string | null>(null);
+  public paramId = signal<string | null>(null);
+
+  public showShare = computed<boolean>(
+    () =>
+      this.resultId() != null &&
+      this.paramId() != null &&
+      this.resultId() === this.paramId()
+  );
+
   public ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const resultId = window.localStorage.getItem('testResultId');
+      this.resultId.set(resultId);
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
+    this.paramId.set(id);
 
     // Set dynamic meta tags
     this.title.setTitle('IQ Test Result');

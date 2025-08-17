@@ -16,7 +16,6 @@ type TestStats = {
   lowest: number;
   totalTests: number;
   averageTime: number;
-  improvement: number;
   currentScore: number;
 };
 
@@ -24,6 +23,15 @@ export type TTestResult = {
   score: number;
   timeSpent: number;
   date: string;
+};
+
+const defaultStats: TestStats = {
+  average: 0,
+  highest: 0,
+  lowest: 0,
+  totalTests: 0,
+  averageTime: 0,
+  currentScore: 0,
 };
 
 @Component({
@@ -45,7 +53,12 @@ export class Results implements OnInit {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
-  public stats = computed<TestStats>(() => this.getStats());
+  public stats = computed<TestStats>(() => {
+    if (this.results().length === 0) {
+      return defaultStats;
+    }
+    return this.getStats();
+  });
   public curretLevel = computed(() => this.getCurrentLevel());
   public consistency = computed(() => this.getConsistency());
 
@@ -168,7 +181,7 @@ export class Results implements OnInit {
       scores.reduce((a, b) => a + b, 0) / scores.length
     );
     const currentScore = result.at(-1)?.score ?? 0;
-    const maxScore = Math.max(...scores);
+    const maxScore = Math.max(0, ...scores);
     const minScore = Math.min(...scores);
     const totalTime = result.reduce((sum, r) => sum + r.timeSpent, 0);
     const avgTime = Math.round(totalTime / result.length / 60);
@@ -180,8 +193,6 @@ export class Results implements OnInit {
       lowest: minScore,
       totalTests: result.length,
       averageTime: Math.ceil(avgTime / 60),
-      improvement:
-        result.length > 1 ? scores[scores.length - 1] - scores[0] : 0,
     };
 
     return stats;

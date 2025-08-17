@@ -9,6 +9,6 @@
     "outDir": "./out-tsc/app",
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "vite.config.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }

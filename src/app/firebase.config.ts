@@ -11,13 +11,19 @@ import { getStorage } from 'firebase/storage';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyBG3NcyGVmo_sIc4_-JBSB4YXSQOQqKkac',
-  authDomain: 'sisiquiz.com',
+  authDomain: 'auth.sisiquiz.com', //iq-test-a907f.firebaseapp.com
   projectId: 'iq-test-a907f',
   storageBucket: 'iq-test-a907f.firebasestorage.app',
   messagingSenderId: '997848554751',
   appId: '1:997848554751:web:c7c71e0f6f93bbf4ba40ca',
   measurementId: 'G-H95RFYG6NN',
 };
+
+// export function initFirebase() {
+//   return () => {
+//     initializeApp(firebaseConfig);
+//   };
+// }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

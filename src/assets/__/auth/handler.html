@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase Auth Handler</title>
+    <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth-compat.js"></script>
+    <script>
+      // REPLACE THIS WITH YOUR ACTUAL FIREBASE CONFIG
+      const firebaseConfig = {
+        apiKey: "AIzaSyBG3NcyGVmo_sIc4_-JBSB4YXSQOQqKkac",
+        authDomain: "sisiquiz.com", //iq-test-a907f.firebaseapp.com
+        projectId: "iq-test-a907f",
+        storageBucket: "iq-test-a907f.firebasestorage.app",
+        messagingSenderId: "997848554751",
+        appId: "1:997848554751:web:c7c71e0f6f93bbf4ba40ca",
+        measurementId: "G-H95RFYG6NN",
+      };
+
+      // Initialize Firebase with YOUR project's configuration
+      firebase.initializeApp(firebaseConfig);
+
+      // Process the authentication result
+      firebase
+        .auth()
+        .getRedirectResult()
+        .then((result) => {
+          if (
+            window.opener &&
+            window.opener.firebase &&
+            window.opener.firebase.auth()
+          ) {
+            // Pass the result back to the main app window
+            window.opener.firebase.auth()._redirectUser(result);
+            window.close(); // Close the pop-up window
+          } else {
+            console.warn(
+              "Could not pass authentication result to opener window."
+            );
+            // Optionally, redirect the user back to your app's main page if opener is not available
+            // window.location.href = "/";
+          }
+        })
+        .catch((error) => {
+          console.error("Authentication error:", error);
+          // Optionally, display an error message or redirect to an error page
+          // document.body.innerText = "Authentication failed: " + error.message;
+          // window.close(); // Close the pop-up window even on error
+        });
+    </script>
+  </head>
+  <body>
+    <!-- A simple message for the user if the window doesn't close immediately -->
+    Authenticating... Please wait or close this window if it doesn't close
+    automatically.
+  </body>
+</html>

@@ -1,7 +1,9 @@
 <div class="section">
   <div class="fancy text-center">
     <h1>SisiQuiz - IQ Test</h1>
-    <h3 class="text-muted-color-emphasis! text-balance my-0!">
+    <h3
+      class="text-muted-color-emphasis! text-lg! sm:text-2xl! text-balance my-0!"
+    >
       Discover your intellectual potential with our comprehensive IQ assessment
     </h3>
   </div>
@@ -42,17 +44,26 @@
     />
   </div>
   }@else {
-  <div class="flex justify-center mb-8">
+  <!-- <div class="flex justify-center mb-8">
     <p-button
       icon="pi pi-google"
       severity="contrast"
       label="Sign in with Google"
       (onClick)="loginWithGoogle()"
     />
-  </div>
+  </div> -->
 
-  <div class="text-center text-muted-color-emphasis font-medium">
-    <p>No payment required.</p>
+  <div class="text-center text-muted-color-emphasis font-medium fancy">
+    <div class="flex justify-center mb-6">
+      <p-button
+        icon="pi pi-google"
+        severity="contrast"
+        label="Sign in with Google"
+        (onClick)="loginWithGoogle()"
+      />
+    </div>
+
+    <p class="mb-1!">No payment required.</p>
     <p class="text-balance">
       Your test results will be available instantly after completing the test!
     </p>
