@@ -10,6 +10,7 @@ export async function generateOgImage(result: {
   const formattedDate = `${String(dateObj.getDate()).padStart(2, '0')}.${String(
     dateObj.getMonth() + 1
   ).padStart(2, '0')}.${dateObj.getFullYear()}`;
+  const formattedTimeSpent = Math.ceil(result.timeSpent / 60);
 
   const browser = await puppeteer.launch({
     args: chromium.args,
@@ -54,7 +55,7 @@ export async function generateOgImage(result: {
       <body class="magicpattern">
         <div class="container">
           <h1>IQ Score: ${result.score}</h1>
-          <h1>Time spent: ${result.timeSpent / 60}min</h1>
+          <h1>Time spent: ${formattedTimeSpent}min</h1>
           <h1>Completion date: ${formattedDate}</h1>
         </div>
       </body>

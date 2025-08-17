@@ -15,7 +15,6 @@ export const imageResolver: ResolveFn<any> = async (route) => {
     return await firebaseService.getStorageURL(imageRef);
   } catch (error) {
     console.warn('Image not found:', error);
-    return null; // or return a fallback image URL
-    // return 'https://your-site.com/assets/fallback-og.png';
+    return 'https://sisiquiz/assets/images/sisiquiz.jpg';
   }
 };
